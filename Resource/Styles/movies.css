@@ -1,0 +1,131 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #93a0d4;
+}
+
+/* Movie list container */
+ul {
+    list-style: none;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.bigMovieButton {
+    width: 1000px;
+
+    text-decoration: none;
+    margin: auto;
+    color: inherit;
+    display: block;
+    margin-bottom: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bigMovieButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.movie-card {
+    display: flex;
+    flex-direction: row-reverse; /* Places image on the right */
+    gap: 2rem;
+    padding: 1.5rem;
+    
+}
+
+.movie-card img {
+    flex: 2;
+    width: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover img {
+    transform: scale(1.02);
+}
+
+.movie-info {
+    /* flex: 2; */
+    padding: 1rem;
+}
+
+.movie-info h5 {
+    font-size: 1.5rem;
+    color: #2d3436;
+    margin-bottom: 0.75rem;
+}
+
+.movie-info h6 {
+    font-size: 0.9rem;
+    color: #636e72;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.movie-info p {
+    font-size: 0.95rem;
+    color: #2d3436;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+}
+
+.movie-info p strong {
+    color: #2d3436;
+    font-weight: 600;
+}
+
+/* Rating styling */
+.movie-info p:has(strong:contains("Rating")) {
+    display: inline-block;
+    background: #ffeaa7;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    color: #e17055;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .movie-card {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .movie-card img {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .movie-info {
+        padding: 1rem 0;
+    }
+    
+    .movie-info h5 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-card {
+        gap: 1rem;
+    }
+    
+    .movie-info p {
+        font-size: 0.9rem;
+    }
+}

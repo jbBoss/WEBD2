@@ -1,0 +1,209 @@
+function displayResults(movies) {
+            resultsDiv.innerHTML = "";
+            movies.forEach(movie => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                
+        
+                const img = document.createElement("img");
+                img.classList.add("card-img-top");
+                img.src = movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/150"; // Placeholder if no poster
+                img.alt = movie.Title;
+        
+                const cardBody = document.createElement("div");
+                cardBody.classList.add("card-body");
+        
+                const title = document.createElement("h5");
+                title.classList.add("card-title");
+                title.textContent = movie.Title;
+        
+                const text = document.createElement("p");
+                text.classList.add("card-text");
+                text.textContent = `Year: ${movie.Year}`;
+        
+                const link = document.createElement("a");
+                link.classList.add("btn", "btn-primary");
+                link.href = `https://www.imdb.com/title/${movie.imdbID}/`;
+                link.target = "_blank";
+                link.textContent = "View on IMDb";
+        
+                cardBody.appendChild(title);
+                cardBody.appendChild(text);
+                cardBody.appendChild(link);
+        
+                card.appendChild(img);
+                card.appendChild(cardBody);
+        
+                resultsDiv.appendChild(card);
+            });
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+<?php if ($message): ?>
+<p><strong>Movie Name:</strong> <?= htmlspecialchars($movie_name) ?></p>
+<p><strong>Year:</strong> <?= htmlspecialchars($year) ?></p>
+<p><strong>Genre:</strong> <?= htmlspecialchars($genere) ?></p>
+<p><strong>IMDb Rating:</strong> <?= htmlspecialchars($imdb_rating) ?></p>
+<p><strong>Director:</strong> <?= htmlspecialchars($director) ?></p>
+<p><strong>Language:</strong> <?= htmlspecialchars($language) ?></p>
+<p><strong>Description:</strong> <?= nl2br(htmlspecialchars($description)) ?></p>
+<p><strong>IMDb ID:</strong> <?= htmlspecialchars($imdb_id) ?></p>
+<p><strong>Poster URL:</strong> <a href="<?= htmlspecialchars($poster) ?>" target="_blank"><?= htmlspecialchars($poster) ?></a></p>
+<?php else: ?>
+<p>Something went wrong, please try again.</p>
+<?php endif; ?>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+$message = 'Movie with this IMDb ID already exists in the database.';
+            $query = "SELECT movie_id FROM movie_table WHERE movie_id = :movie_id";
+            $statement = $db->prepare($query);
+            $statement->bindValue(':imdb_id', $imdb_id, PDO::PARAM_STR);
+            $statement->execute();
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+
+            "INSERT INTO watchlist (movie_name, genre, imdb_rating, director, language, poster, movie_year , movie_description, imdb_id) 
+                                             VALUES (:movie_name, :genre, :imdb_rating, :director, :language, :poster, :year, :description, :imdb_id)";
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+if ($movie) { 
+            $message = $movie['movie_name'].' exists in DB.';
+            echo $message;
+            //check_imbd_id in movie_table
+                // if(true) movie_id to wishlist
+        } else {
+            $message = add_to_movie_table($db, $movie_name, $genre, $imdb_rating, $director, $language, $poster, $year, $description, $imdb_id);
+            echo $message;
+            check_in_wishlist($db, $imdb_id, $_SESSION['user_id'],$user_data );
+        }
+        --------------------------------------------------------------------------------------------------------------------------------------------------------------
+        <?php if($isWatchlistUpdated): ?>
+        <h1> <?=  ?> </h1>
+        <?php else: ?>
+        <h1> <?=  ?> </h1>
+    <?php endif ?>
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    $query = "SELECT m.*, w.time 
+          FROM movie_table m
+          JOIN watchlist w ON m.movie_id = w.movie_id
+          WHERE w.user_id = :user_id";
+          --------------------------------------------------------------------------------------------------------------------------------------------------------------
+          <?php foreach($user_watchedlist as $movie): ?>
+                <div class="movie-card">
+                    <img src="<?= ($movie['poster']) ?>" alt="<?= ($movie['movie_name']) ?> poster" class="poster">
+                        <div>
+                        <h2 class="movie-title"><?= ($movie['movie_name']) ?></h2>
+                        <p class="movie-year"><?= ($movie['movie_year']) ?></p>
+                        <p class="movie-year"><?= ($movie['genre']) ?></p>
+                        <p class="time">Added at :<?= date("F j, Y, g:i a", strtotime($movie['time'])) ?></p>                        
+                    </div>
+                    
+                    <form class="comment_n_rating" action="addComments.php" method="post">
+                        <div class="comment">
+                            <label for="comment"> Comment </label>
+                            <textarea name="comment"><?= htmlspecialchars($movie['comment']) ?></textarea>
+                        </div>
+                        <div>
+                            <label for="rating">Rating</label>
+                            <input class="user_rating" type="text" value="<?= ($movie['rating']) ?>" style="color: black;">
+
+                            <div class="rating-options">
+                            <input type="radio" id="rating1" name="rating" value="1">
+                            <label for="rating1">1</label>
+                            
+                            <input type="radio" id="rating2" name="rating" value="2">
+                            <label for="rating2">2</label>
+
+                            <input type="radio" id="rating3" name="rating" value="3">
+                            <label for="rating3">3</label>
+
+                            <input type="radio" id="rating4" name="rating" value="4">
+                            <label for="rating4">4</label>
+
+                            <input type="radio" id="rating5" name="rating" value="5">
+                            <label for="rating5">5</label>
+
+                            <input type="radio" id="rating6" name="rating" value="6">
+                            <label for="rating6">6</label>
+
+                            <input type="radio" id="rating7" name="rating" value="7">
+                            <label for="rating7">7</label>
+
+                            <input type="radio" id="rating8" name="rating" value="8">
+                            <label for="rating8">8</label>
+
+                            <input type="radio" id="rating9" name="rating" value="9">
+                            <label for="rating9">9</label>
+
+                            <input type="radio" id="rating10" name="rating" value="10">
+                            <label for="rating10">10</label>
+                        </div>
+                </div>
+                        <button type="submit"> Edit </button>
+                        
+                    </form>
+                </div>
+            <?php endforeach; ?>
+            ----------------------------------------------------------------------------------------------------------------------------------------------------------$_COOKIE
+body {
+    font-family: Arial, sans-serif;
+    background-color: #8b8787;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+.movie-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin-bottom: 20px;
+}
+.movie-card img {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+.movie-info {
+    flex: 1;
+}
+.movie-info h5 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+.movie-info h6 {
+    margin: 5px 0;
+    color: #666;
+}
+.movie-info p {
+    margin: 5px 0;
+    color: #444;
+}
+.bigMovieButton{
+    text-decoration: none;
+
+}
+------------------------------------------------------
+<script>
+        fetch('../check_session.php')
+    .then(response => response.json())
+    .then(data => {
+        if (data.loggedIn) {
+            console.log("User is logged in as:", data.user);
+            window.location.href = "Resource/pages/watched.html";
+        } else {
+            console.log("User is not logged in.");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    })
+    .catch(error => console.error("Error checking session:", error));
+
+    </script>
+------------------------------------------------------------------------------------------------------------
+
+echo '<pre>';
+print_r($users);
+echo '</pre>';
+echo json_encode($movie, JSON_PRETTY_PRINT);
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

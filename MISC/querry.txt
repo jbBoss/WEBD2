@@ -1,0 +1,13 @@
+SELECT 
+    m.movie_id, 
+    m.movie_name, 
+    COUNT(w.comment) AS comment_count
+FROM 
+    movie_table m
+JOIN 
+    watched w ON m.movie_id = w.movie_id
+GROUP BY 
+    m.movie_id
+ORDER BY 
+    comment_count DESC
+LIMIT 10;
