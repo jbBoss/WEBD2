@@ -85,7 +85,15 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
                     </form>
 
                 </div>
-                <img src="../grabMovie/uploads/<?= htmlspecialchars($movie['poster']) ?>" class="card-img-top" alt="<?= htmlspecialchars($movie['movie_name']) ?>">
+                <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                    alt="<?= $movie['movie_name'] ?>">
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
             </div>
         </div>
 

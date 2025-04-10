@@ -5,7 +5,7 @@ session_start(); // Make sure session is started
 $query = $query = "SELECT *
                     FROM movie_request
                     WHERE status = 'Pending'
-                    ORDER BY time DESC";        
+                    ORDER BY time DESC";
 ;
 $statement = $db->prepare($query);
 $statement->execute();
@@ -33,8 +33,15 @@ $movies = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <?php foreach ($movies as $movie): ?>
                             <li><a class="bigMovieButton" href="">
                                     <div class="movie-card">
-                                        <img src="../../grabMovie/uploads/<?= htmlspecialchars($movie['poster']) ?>"
-                                            alt="<?= htmlspecialchars($movie['movie_name']) ?> poster">
+                                        <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                            <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                                alt="<?= $movie['movie_name'] ?>">
+                                        <?php else: ?>
+                                            <div class="card h-100 text-center p-3">
+                                                <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                                <p>Poster not available for this movie</p>
+                                            </div>
+                                        <?php endif; ?>
                                         <div class="movie-info">
                                             <h3><?= htmlspecialchars($movie['movie_name']) ?></h5>
                                                 <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>

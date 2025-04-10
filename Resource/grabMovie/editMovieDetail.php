@@ -187,9 +187,15 @@ if (isset($_POST['editMovieDetails'])) {
     <div class="api_control">
         <input type="text" id="search" placeholder="Search for a movie...">
         <div>
-            <?php if (!empty($edit_movie['poster'])): ?>
-                <img src="uploads/<?= $edit_movie['poster'] ?>" alt="<?= $edit_movie['movie_name'] ?> movie poster">
-            <?php endif; ?>
+        <?php if ($edit_movie['poster'] !== "Default.jpeg"): ?>
+                                            <img src="uploads/<?= $edit_movie['poster'] ?>" class="card-img-top"
+                                                alt="<?= $edit_movie['movie_name'] ?>">
+                                        <?php else: ?>
+                                            <div class="card h-100 text-center p-3">
+                                                <p><strong><?= $edit_movie['movie_name'] ?></strong></p>
+                                                <p>Poster not available for this movie</p>
+                                            </div>
+                                        <?php endif; ?>
         </div>
     </div>
 

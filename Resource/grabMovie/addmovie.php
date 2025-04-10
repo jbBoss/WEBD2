@@ -38,9 +38,11 @@ $validFile = $_GET['valid'] ?? false;
     <?php endif; ?>
     <main>
         <div class="api_control">
-            <input type="text" id="search" placeholder="Search for a movie...">
+            <input type="text" id="search" placeholder="Search Here to Grab Details Faster">
             <div>
-                <p id="search-results"></p>
+                <p id="search-results">
+                    
+                </p>
             </div>
         </div>
         <div class="form_control">

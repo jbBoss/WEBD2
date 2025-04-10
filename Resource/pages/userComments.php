@@ -46,11 +46,14 @@ $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
 <body>
 <?php if (isset($_SESSION['user_id'])): ?>
         <nav>
-            <a href="userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
+            <ol>
+                <li><a href="userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a></li>
+                <li><a href="topComments.php">Most Commented</a></li>
+                <li><a href="topRated.php">Top rated</a></li>
+            </ol> 
             <h1>Comments and Ratings</h1>
             <ol>
                 <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
-                <li></li>
                 <li><a href="../../config/logout.php">Log out</a></li>
             </ol>
         </nav>
@@ -68,8 +71,15 @@ $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($user_commented_movies as $movie): ?>
                     <li><a class="bigMovieButton" href="">
                             <div class="movie-card">
-                                <img src="../grabMovie/uploads/<?= htmlspecialchars($movie['poster']) ?>"
-                                    alt="<?= htmlspecialchars($movie['movie_name']) ?> poster">
+                            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="..//grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                    alt="<?= $movie['movie_name'] ?>">
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
                                 <div class="movie-info">
                                     <h3><?= htmlspecialchars($movie['movie_name']) ?></h5>
                                         <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>

@@ -62,118 +62,131 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Resource/Styles/defaultNav.css">
     <link rel="stylesheet" href="Resource/Styles/firstPage.css">
+
     <title>MovieConnect</title>
 </head>
-<body>
 
-<?php if (isset($_SESSION['user_id'])): ?>
-    <nav>
-        <li><a href="Resource/pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a></li>
-        <h1>MovieConnect</h1>
-        <ol>
-            <li><a href="Resource/grabMovie/addMovie.php">Request new movie</a></li>
-            <li>.......</li>
-            <li><a href="config/logout.php">Log out</a></li>
-        </ol>
-    </nav>
-<?php else: ?>
-    <nav>
-        <h1>MovieConnect</h1>
-        <li><a href="login.html">Log in</a></li>
-    </nav>
-<?php endif; ?>
-
-<br>
-<?php if (isset($_SESSION['user_id'])): ?>
-<nav class="filter-nav">
-    <!-- Filter Form -->
-    <form action="index.php" method="POST" class="filter-form">
-        <div class="filter-group">
-            <label for="rating">Rating:</label>
-            <select name="rating" id="rating" class="filter-select">
-                <option value="">1 to 9</option>
-                <option value="1">1+</option>
-                <option value="2">2+</option>
-                <option value="3">3+</option>
-                <option value="4">4+</option>
-                <option value="5">5+</option>
-                <option value="6">6+</option>
-                <option value="7">7+</option>
-                <option value="8">8+</option>
-                <option value="9">9+</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label for="genre">Genre:</label>
-            <select name="genre" id="genre" class="filter-select">
-                <option value="">Select a genre</option>
-                <option value="action">Action</option>
-                <option value="comedy">Comedy</option>
-                <option value="drama">Drama</option>
-                <option value="horror">Horror</option>
-                <option value="romance">Romance</option>
-                <option value="sci-fi">Sci-Fi</option>
-                <option value="thriller">Thriller</option>
-                <option value="animation">Animation</option>
-                <option value="documentary">Documentary</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label for="title">Title:</label>
-            <select name="title_sort" id="title" class="filter-select">
-                <option value="">Sort by title</option>
-                <option value="DESC">Z-A</option>
-                <option value="ASC">A-Z</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
-    </form>
-
-    <!-- Search Form -->
-    <form action="index.php" method="POST" class="search-form">
-        <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-</nav>
-<?php endif; ?>
-
-<main>
-    <div>
-        <ol>
-            <div class="container">
-                <div class="row">
-                    <?php foreach ($user_watched_movies as $movie): ?>
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <a href="Resource/pages/WatchedMovie.php?movie_id=<?= $movie['movie_id'] ?>"
-                               style="text-decoration: none;">
-                                <div class="card h-100">
-                                    <img src="Resource/grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
-                                         alt="<?= $movie['movie_name'] ?>">
-                                    <div class="card-body text-center">
-                                        <h3 class="card-title"><?= $movie['movie_name'] ?></h3>
-                                        <p class="card-text"><strong>Genre:</strong> <?= $movie['genre'] ?></p>
-                                        <p class="card-text"><strong>Year:</strong> <?= $movie['movie_year'] ?></p>
-                                        <p class="card-text"><strong>Rating:</strong> <?= $movie['imdb_rating'] ?>/10</p>
-                                        <p class="card-text"><strong>Language:</strong> <?= $movie['language'] ?></p>
-                                        <p class="card-text"><strong>Director:</strong> <?= $movie['director'] ?></p>
-                                        <p class="card-text"><strong>Plot:</strong>
-                                            <?= substr($movie['movie_description'], 0, 100) ?>...</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+<body style="background-color: #1f1f1f;">
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <nav class="defaultNav">
+            <div class="navbar-top">
+                <li class="nav-item"><a href="Resource/pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
+                        Comments & Ratings</a></li>
             </div>
-        </ol>
-    </div>
-</main>
+            <h1 class="site-title">MovieConnect</h1>
+            <ol class="nav-list">
+                <li class="nav-item"><a href="Resource/grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
+                <li class="nav-item"><a href="config/logout.php" class="nav-link logout">Log Out</a></li>
+            </ol>
+        </nav>
+    <?php else: ?>
+        <nav class="defaultNav">
+            <h1 class="site-title">MovieConnect</h1>
+            <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
+        </nav>
+    <?php endif; ?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <nav class="filter-nav">
+            <!-- Filter Form -->
+            <form action="index.php" method="POST" class="filter-form">
+                <div class="filter-group">
+                    <!-- <label for="rating">Rating:</label> -->
+                    <select name="rating" id="rating" class="filter-select">
+                        <option value="">Rating 1 to 9</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                        <option value="5">5+</option>
+                        <option value="6">6+</option>
+                        <option value="7">7+</option>
+                        <option value="8">8+</option>
+                        <option value="9">9+</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="genre">Genre:</label>
+                    <select name="genre" id="genre" class="filter-select">
+                        <option value="">Select a genre</option>
+                        <option value="action">Action</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="drama">Drama</option>
+                        <option value="horror">Horror</option>
+                        <option value="romance">Romance</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="animation">Animation</option>
+                        <option value="documentary">Documentary</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="title">Title:</label>
+                    <select name="title_sort" id="title" class="filter-select">
+                        <option value="">Sort by title</option>
+                        <option value="DESC">Z-A</option>
+                        <option value="ASC">A-Z</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </form>
+
+            <!-- Search Form -->
+            <form action="index.php" method="POST" class="search-form">
+                <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </nav>
+    <?php endif; ?>
+    <main>
+        <div class="container">
+            <div class="row">
+                <?php foreach ($user_watched_movies as $movie): ?>
+                    <div class="col-md-3 col-sm-6 mb-4">
+
+                        <div class="card h-100">
+                            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="Resource/grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                    alt="<?= $movie['movie_name'] ?>">
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
+                             <a href="Resource/pages/WatchedMovie.php?movie_id=<?= $movie['movie_id'] ?>"
+                             style="text-decoration: none;">
+
+                            <div class="card-body text-center">
+                               
+                                    <h3 class="card-title"><?= $movie['movie_name'] ?></h3>
+                                    <p class="card-text"><strong>Genre:</strong> <?= $movie['genre'] ?></p>
+                                    <p class="card-text"><strong>Year:</strong> <?= $movie['movie_year'] ?></p>
+                                    <p class="card-text"><strong>Rating:</strong> <?= $movie['imdb_rating'] ?>/10</p>
+                                    <p class="card-text"><strong>Language:</strong> <?= $movie['language'] ?></p>
+                                    <p class="card-text"><strong>Director:</strong> <?= $movie['director'] ?></p>
+                                    <p class="card-text"><strong>Plot:</strong>
+                                        <?= substr($movie['movie_description'], 0, 100) ?>...</p>
+                            </div>
+                            </a>
+
+                        </div>
+
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

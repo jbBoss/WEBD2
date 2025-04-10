@@ -130,8 +130,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
     <main>
             <div class="movie-card">
-                <img src="../grabMovie/uploads/ <?= htmlspecialchars($movie['poster']) ?>"
-                    alt="<?= htmlspecialchars($movie['movie_name']) ?> poster" class="poster">
+            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                    alt="<?= $movie['movie_name'] ?>">
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
                 <div>
                     <h2 class="movie-title"><?= htmlspecialchars($movie['movie_name']) ?></h2>
                     <p class="movie-year"><?= htmlspecialchars($movie['movie_year']) ?></p>
