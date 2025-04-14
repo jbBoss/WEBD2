@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($errors)) {
         $message = implode("<br>", $errors);
     } else {
-
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $message = "Registration Successful!";
     }
 } else {
@@ -77,7 +77,7 @@ if (empty($errors)){
     $statement->bindValue(':user_fname', $fullName);
     $statement->bindValue(':user_name', $userName);
     $statement->bindValue(':user_gmail', $email);
-    $statement->bindValue(':user_password', $password);
+    $statement->bindValue(':user_password', $hashedPassword);
     $statement->bindValue(':user_image', $profileImage);
     if($statement->execute()){
         $message = "Registration Successful!";

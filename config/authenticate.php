@@ -19,12 +19,13 @@ function valid_user($db, $user, $password) {
     // Fetch the user data
     $user_data = $statement->fetch(PDO::FETCH_ASSOC);
     
-    if ($user_data && $password == $user_data['user_password']) {
+    if ($user_data && password_verify($password, $user_data['user_password'])) {
         return $user_data; // Return user details if the password is correct
     } else {
         return false; // User not found or password incorrect
     }
 }
+
 
 if (!isset($_POST['username']) || !isset($_POST['password']) || empty(trim($_POST["username"])) || empty(trim($_POST["password"]))) {
     $message = "Missing credentials";
