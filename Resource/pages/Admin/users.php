@@ -30,7 +30,7 @@ try {
                 <div class="user-container">
                 <?php foreach ($users_data as $user): ?>
 
-        <div class="user-card">
+        <a href="../../../config/editUser.php?user_id=<?=$user['user_id'] ?>" class="user-card">
             <div class="user-info">
                 <div class="user-info-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -67,7 +67,7 @@ try {
                 </div>
             </div>
             
-        </div>
+        </a>
         <?php endforeach; ?>
 
     </div>
