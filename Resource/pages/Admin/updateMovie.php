@@ -10,6 +10,22 @@ try {
 } catch (PDOException $e) {
     die("Database error: " . $e->getMessage());
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $search_term = isset($_POST['search']) ? '%' . $_POST['search'] . '%' : '';
+
+    $query = "SELECT m.*, w.*
+              FROM movie_table m
+              JOIN watched w ON m.movie_id = w.movie_id
+              WHERE m.movie_name LIKE :search_term 
+              ORDER BY m.movie_name ASC";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':search_term', $search_term, PDO::PARAM_STR); 
+    $statement->execute();
+
+
+    $movie_data = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +42,10 @@ try {
 
 <body>
     <?php include '../../../config/adminnav.php'; ?>
+    <form action="" method="POST" class="search-form">
+            <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
     <br>
     <main>
         <div>

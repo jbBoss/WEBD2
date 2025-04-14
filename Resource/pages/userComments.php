@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement->bindValue(':search_term', $search_term, PDO::PARAM_STR); // missing in your original
     $statement->execute();
 
-    // ✅ This was missing:
+
     $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 
