@@ -92,7 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
         </nav>
     <?php endif; ?>
-
     <?php if (isset($_SESSION['user_id'])): ?>
         <nav class="filter-nav">
             <!-- Filter Form -->
@@ -144,6 +143,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
         </nav>
+
+    <?php else: ?>
+        <nav class="filter-nav">
+            <form action="index.php" method="POST" class="search-form">
+                <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </nav>
     <?php endif; ?>
     <main>
         <div class="container">
@@ -161,11 +168,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <p>Poster not available for this movie</p>
                                 </div>
                             <?php endif; ?>
-                             <a href="Resource/pages/WatchedMovie.php?movie_id=<?= $movie['movie_id'] ?>"
-                             style="text-decoration: none;">
+                            <a href="Resource/pages/WatchedMovie.php?movie_id=<?= $movie['movie_id'] ?>"
 
-                            <div class="card-body text-center">
-                               
+                            style="text-decoration: none;">
+
+                                <div class="card-body text-center">
+
+                                
                                     <h3 class="card-title"><?= $movie['movie_name'] ?></h3>
                                     <p class="card-text"><strong>Genre:</strong> <?= $movie['genre'] ?></p>
                                     <p class="card-text"><strong>Year:</strong> <?= $movie['movie_year'] ?></p>
@@ -174,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <p class="card-text"><strong>Director:</strong> <?= $movie['director'] ?></p>
                                     <p class="card-text"><strong>Plot:</strong>
                                         <?= substr($movie['movie_description'], 0, 100) ?>...</p>
-                            </div>
+                                </div>
                             </a>
 
                         </div>

@@ -16,7 +16,23 @@ $statement->execute();
 
 // Fetch the user data
 $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $search_term = isset($_POST['search']) ? '%' . $_POST['search'] . '%' : '';
 
+    $query = "SELECT m.*, w.*
+              FROM movie_table m
+              JOIN watched w ON m.movie_id = w.movie_id
+              WHERE w.user_id = :user_id AND m.movie_name LIKE :search_term 
+              ORDER BY m.movie_name ASC";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $statement->bindValue(':search_term', $search_term, PDO::PARAM_STR); // missing in your original
+    $statement->execute();
+
+    // ✅ This was missing:
+    $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
+}
 
 ?>
 
@@ -46,6 +62,10 @@ $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <li><a href="../../config/logout.php">Log out</a></li>
             </ol>
         </nav>
+        <form action="" method="POST" class="search-form">
+            <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
     <?php else: ?>
         <nav>
             <h1>MovieConnect</h1>
@@ -53,7 +73,9 @@ $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
         </nav>
 
     <?php endif; ?>
+
     <br>
+
     <main>
         <div>
             <ol>
@@ -70,7 +92,7 @@ $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
                                     </div>
                                 <?php endif; ?>
                                 <div class="movie-info">
-                                    <h3><?= htmlspecialchars($movie['movie_name']) ?></h5>
+                                    <h3><?= htmlspecialchars($movie['movie_name']) ?></h3>
                                         <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
                                         <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
                                         <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?></p>
@@ -82,7 +104,8 @@ $user_commented_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
 
                                 <div class="userCommentsAndRating">
-                                    <h3><strong></strong>Comment: </strong><?= ($movie['comment']) ?></h3>
+                                <h3><strong>Comment:</strong> <?= htmlspecialchars($movie['comment']) ?></h3>
+
                                     <p><strong> Personal Rating:</strong> <?= htmlspecialchars($movie['rating']) ?></p>
                                     <div class="deleteButton">
                                         <a class="edit-btn" href="updateComment.php?watch_id=<?= $movie['watch_id'] ?>"
