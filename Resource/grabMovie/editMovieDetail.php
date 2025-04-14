@@ -56,35 +56,45 @@ function file_upload_path($filename, $folder = 'uploads')
     return join(DIRECTORY_SEPARATOR, [$base, $folder, basename($filename)]);
 }
 
-function file_is_an_image($temp, $path)
-{
+function file_is_an_image($temp, $path) {
+    // Check if the file is an image by its extension and MIME type
     $valid_exts = ['gif', 'jpg', 'jpeg', 'png'];
     $valid_types = ['image/gif', 'image/jpeg', 'image/png'];
     $ext = pathinfo($path, PATHINFO_EXTENSION);
     $type = mime_content_type($temp);
-    return in_array($ext, $valid_exts) && in_array($type, $valid_types);
+
+    // Check if both the file extension and MIME type are valid
+    return in_array(strtolower($ext), $valid_exts) && in_array($type, $valid_types);
 }
 
-// Handle image upload
-$poster = $edit_movie['poster'] ?? "Default.jpeg";
+// Image Upload
+$poster = "Default.jpeg";
 $validFile = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     $original_filename = uniqid() . '_' . basename($_FILES['image']['name']);
     $temp_path = $_FILES['image']['tmp_name'];
     $new_path = file_upload_path($original_filename);
+
+    // Perform the image "image-ness" test
     if (file_is_an_image($temp_path, $new_path)) {
+        // If it passes, move the file and resize it
         if (move_uploaded_file($temp_path, $new_path)) {
             $image = new ImageResize($new_path);
-            $image->resizeToWidth(400)->save($new_path);
+            // Resize to medium size (e.g., 400px width) and save with the same filename
+            $image->resizeToWidth(400)->save($new_path); // Overwrite the original file with the resized image
+
             $poster = $original_filename;
             $validFile = true;
         }
+    } else {
+        // Reject the upload if it's not a valid image
+        $errors[] = "The uploaded file is not a valid image.";
     }
 }
 
-// Handle form submission
-$errors = [];
+// Continue with the rest of your validation and database insert logic
+
 $isDbUpdated = false;
 
 if (isset($_POST['editMovieDetails'])) {
@@ -185,7 +195,7 @@ if (isset($_POST['editMovieDetails'])) {
     <?php endif; ?>
 
     <div class="api_control">
-        <input type="text" id="search" placeholder="Search for a movie...">
+        <!-- <input type="text" id="search" placeholder="Search for a movie..."> -->
         <div>
         <?php if ($edit_movie['poster'] !== "Default.jpeg"): ?>
                                             <img src="uploads/<?= $edit_movie['poster'] ?>" class="card-img-top"
@@ -216,7 +226,7 @@ if (isset($_POST['editMovieDetails'])) {
             </label>
 
             <input type="submit" name="editMovieDetails" value="Submit Movie">
-            <button type="reset">Reset</button>
+            <a href="../pages/Admin/updateMovie.php"> Cancel </a>
         </form>
     </div>
 </main>

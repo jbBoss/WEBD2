@@ -6,50 +6,50 @@ $current_user = $_SESSION['user_id'];
 $current_user_name = $_SESSION['user'];
 
 $movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_SANITIZE_NUMBER_INT); // Getting the movie ID from the URL for viewing
-
+echo 'movie' . $movie_id . '<br>';
 // Display the movie_id
 // echo "The movie ID is: " . htmlspecialchars($movie_id);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if the movie_id is set and sanitize the input
-    if (isset($_POST['movie_id'])) {
-        $movie_id = filter_input(INPUT_POST, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
-        $query = "SELECT * FROM movie_table WHERE movie_id = :movie_id";
-        $statement = $db->prepare($query);
-        $statement->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
-        // Execute the query
-        $statement->execute();
-        // Fetch the movie data (assuming it's only one movie)
-        $movie = $statement->fetch(PDO::FETCH_ASSOC);
+// Check if the mo
+$query = "SELECT * FROM movie_table WHERE movie_id = :movie_id";
+$statement = $db->prepare($query);
+$statement->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
+// Execute the query
+$statement->execute();
+// Fetch the movie data (assuming it's only one movie)
+$movie = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($movie) {
-            // echo "Movie Found: " . htmlspecialchars($movie['movie_name']);
-        } else {
-            header("Location: ../index.php");
-        }
-    }
+if ($movie) {
+    // echo "Movie Found: " . htmlspecialchars($movie['movie_name']);
+} else {
+    header("Location: ../index.php");
+}
 
-    if (isset($_POST['comment'])) {
-        $movie_id = filter_input(INPUT_POST, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
 
-        $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
-        $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && isset($_POST['rating']) ) {
 
-        // Insert comment and rating into the database
+    $movie_id = filter_input(INPUT_POST, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
+    $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
+    $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
+    if (empty(trim($_POST['comment']))){
+        echo "Error: Failed to update record Fill all fields.";
+    }else{
         $query = "INSERT INTO watched (movie_id, user_id, comment, rating) VALUES (:movie_id, :user_id, :comment, :rating)";
-        $statement = $db->prepare($query);
-        $statement->bindValue(':comment', $comment);
-        $statement->bindValue(':user_id', $current_user);
-        $statement->bindValue(':rating', $rating);
-        $statement->bindValue(':movie_id', $movie_id, PDO::PARAM_INT);
+    $statement = $db->prepare($query);
+    $statement->bindValue(':comment', $comment);
+    $statement->bindValue(':user_id', $current_user);
+    $statement->bindValue(':rating', $rating);
+    $statement->bindValue(':movie_id', $movie_id, PDO::PARAM_INT);
 
-        if ($statement->execute()) {
-            header("Location: ../Resource/pages/WatchedMovie.php?movie_id=" . $movie_id);
-            exit();
-        } else {
-            echo "Error: Failed to update record.";
-        }
+    if ($statement->execute()) {
+        header("Location: ../Resource/pages/WatchedMovie.php?movie_id=" . $movie_id);
+        exit();
+    } else {
+        echo "Error: Failed to update record.";
     }
+    }
+    echo " Insert comment and rating into the Fields";
+    
 }
 ?>
 <!DOCTYPE html>
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="rating">Personal Rating</label>
                         <div class="rating-options">
                             <?php for ($i = 1; $i <= 10; $i++): ?>
-                                <input type="radio" id="rating<?= $i ?>" name="rating" value="<?= $i ?>"
+                                <input required type="radio" id="rating<?= $i ?>" name="rating" value="<?= $i ?>"
                                     <?= (isset($_POST['rating']) && $_POST['rating'] == $i) ? 'checked' : '' ?>>
                                 <label for="rating<?= $i ?>"><?= $i ?></label>
                             <?php endfor; ?>

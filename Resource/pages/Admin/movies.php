@@ -18,9 +18,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="../Styles/home.css"> -->
-    <link rel="stylesheet" href="../../Styles/movies.css">
+    <link rel="stylesheet" href="../../Styles/adminMovies.css">
     <title>Admin</title>
 </head>
 
@@ -42,7 +40,15 @@ try {
                                     </p>
                                     <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
                                     <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
+
+                                    <a href="../../../config/deleteMovie.php?movie_id=<?= $movie['movie_id'] ?>">
+                                        </button>
+                                        <button>delete
+                                    </a>
+
+
                                 </div>
+
                                 <?php if ($movie['poster'] !== "Default.jpeg"): ?>
                                     <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
                                         alt="<?= $movie['movie_name'] ?>">
@@ -52,6 +58,7 @@ try {
                                         <p>Poster not available for this movie</p>
                                     </div>
                                 <?php endif; ?>
+
                             </div>
                     </li></a>
                 <?php endforeach; ?>
@@ -60,7 +67,6 @@ try {
     </main>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

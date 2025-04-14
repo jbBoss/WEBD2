@@ -36,11 +36,14 @@ function file_upload_path($filename, $folder = 'uploads') {
 }
 
 function file_is_an_image($temp, $path) {
+    // Check if the file is an image by its extension and MIME type
     $valid_exts = ['gif', 'jpg', 'jpeg', 'png'];
     $valid_types = ['image/gif', 'image/jpeg', 'image/png'];
     $ext = pathinfo($path, PATHINFO_EXTENSION);
     $type = mime_content_type($temp);
-    return in_array($ext, $valid_exts) && in_array($type, $valid_types);
+
+    // Check if both the file extension and MIME type are valid
+    return in_array(strtolower($ext), $valid_exts) && in_array($type, $valid_types);
 }
 
 // Image Upload
@@ -51,21 +54,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && $_FILES[
     $original_filename = uniqid() . '_' . basename($_FILES['image']['name']);
     $temp_path = $_FILES['image']['tmp_name'];
     $new_path = file_upload_path($original_filename);
+
+    // Perform the image "image-ness" test
     if (file_is_an_image($temp_path, $new_path)) {
+        // If it passes, move the file and resize it
         if (move_uploaded_file($temp_path, $new_path)) {
             $image = new ImageResize($new_path);
-            // Resize to medium and save with the same filename
+            // Resize to medium size (e.g., 400px width) and save with the same filename
             $image->resizeToWidth(400)->save($new_path); // Overwrite the original file with the resized image
-            
+
             $poster = $original_filename;
             $validFile = true;
         }
+    } else {
+        // Reject the upload if it's not a valid image
+        $errors[] = "The uploaded file is not a valid image.";
     }
 }
 
+// Continue with the rest of your validation and database insert logic
 
-// Validation
-$errors = [];
+
+
+
 // IMDb ID Handling
 if (empty($_POST['imdb_id'])) {
     $imdb_id = "A2C4E8"; 

@@ -2,7 +2,7 @@
 require('../../config/connect.php');
 session_start();
 // Validate movie_id before running query
-$movie_id = filter_input(INPUT_GET, 'movie_id',  FILTER_VALIDATE_INT);
+$movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_VALIDATE_INT);
 if (!$movie_id || !is_numeric($movie_id)) {
     header("Location: ../../index.php");
     exit();
@@ -25,7 +25,8 @@ if (!$movie) {
 $query = "SELECT w.*, u.user_fname 
           FROM watched w
           JOIN user_table u ON w.user_id = u.user_id 
-          WHERE w.movie_id = :movie_id";
+          WHERE w.movie_id = :movie_id
+          ORDER BY time DESC";
 
 $statement = $db->prepare($query);
 $statement->bindValue(':movie_id', $movie_id, PDO::PARAM_INT);
@@ -36,32 +37,34 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../Styles/popup.css">
-    <link rel="stylesheet" href="../Styles/home.css">
-    <link rel="stylesheet" href="../Styles/watchcard.css">
+    <link rel="stylesheet" href="../Styles/watchedMovie.css">
+
     <title>Comment</title>
 </head>
+
 <body>
 <?php if (isset($_SESSION['user_id'])): ?>
-        <nav>
-            <a href="userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
-            <h1>MovieConnect</h1>
-            <ol>
-                <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
-                <li></li>
-                <li><a href="../../config/logout.php">Log out</a></li>
+        <nav class="defaultNav">
+            <div class="navbar-top">
+                <li class="nav-item"><a href="../pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
+                        Comments & Ratings</a></li>
+            </div>
+            <h1 class="site-title"><a href="../../index.php">MovieConnect</a></h1>
+            <ol class="nav-list">
+                <li class="nav-item"><a href="Resource/grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
+                <li class="nav-item"><a href="../../config/logout.php" class="nav-link logout">Log Out</a></li>
             </ol>
         </nav>
     <?php else: ?>
-        <nav>
-            <h1>MovieConnect</h1>
-            <li><a href="../..login.html">Log in</a></li>
+        <nav class="defaultNav">
+            <h1 class="site-title">MovieConnect</h1>
+            <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
         </nav>
-
     <?php endif; ?>
 
     <main>
@@ -79,27 +82,26 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <p id="movieDirector"><?= htmlspecialchars($movie['director']) ?></p>
                     <h3>Language</h3>
                     <p id="movielanguage"><?= htmlspecialchars($movie['language']) ?></p>
-                    <form action="../../config/addComments.php" class="button-group" method="POST">
-                        <input type="hidden" name="movie_id" value="<?= $movie['movie_id'] ?>"> 
-                        <input class="btn btn-success" type="submit" name="add_comment" value="Add comment" >
-                    </form>
+                    
+                    <a class="btn btn-success" href="../../config/addComments.php?movie_id=<?= $movie['movie_id'] ?>"
+                                            "> Add comment </a>
 
                 </div>
                 <?php if ($movie['poster'] !== "Default.jpeg"): ?>
-                                <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
-                                    alt="<?= $movie['movie_name'] ?>">
-                            <?php else: ?>
-                                <div class="card h-100 text-center p-3">
-                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
-                                    <p>Poster not available for this movie</p>
-                                </div>
-                            <?php endif; ?>
+                    <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                        alt="<?= $movie['movie_name'] ?>">
+                <?php else: ?>
+                    <div class="card h-100 text-center p-3">
+                        <p><strong><?= $movie['movie_name'] ?></strong></p>
+                        <p>Poster not available for this movie</p>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
         <?php if (!empty($users) && is_array($users)): ?>
             <?php foreach ($users as $user): ?>
-                <div class = "commentNrating">
+                <div class="commentNrating">
                     <h3>User: <?= htmlspecialchars($user['user_fname']) ?></h3>
                     <h4>Comment: <?= htmlspecialchars($user['comment']) ?></h4>
                     <h5><?= htmlspecialchars($user['user_fname']) ?>'s Rating: <?= htmlspecialchars($user['rating']) ?>/10</h5>
@@ -110,7 +112,7 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
         <?php else: ?>
             <p>No comments yet.</p>
         <?php endif; ?>
-        
+
     </main>
 
     <!-- <script>
@@ -130,4 +132,5 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     </script> -->
 </body>
+
 </html>
