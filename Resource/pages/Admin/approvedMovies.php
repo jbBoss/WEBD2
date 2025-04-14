@@ -24,6 +24,8 @@ $movies = $statement->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
+<?php include '../../../config/adminnav.php'; ?>
+
     <br>
     <main>
         <div>

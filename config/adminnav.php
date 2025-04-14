@@ -65,7 +65,7 @@
         <ul>
             <li><a href="admin.html">Home</a></li>
         </ul>
-        <h2>Admin Panel</h2>
+        <a href="admin.html"><h2>Admin Panel</h2></a>
         <ul>
             <li><a href="../Admin/movies.php">Movies</a></li>
             <li><a href="../Admin/users.php">Users</a></li>

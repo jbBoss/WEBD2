@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav>
             <ol>
                 <li><a href="userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a></li>
-                <li><a href="topComments.php">Most Commented</a></li>
-                <li><a href="topRated.php">Top rated</a></li>
+                <!-- <li><a href="topComments.php">Most Commented</a></li>
+                <li><a href="topRated.php">Top rated</a></li> -->
             </ol>
             <h1 class="site-title"><a href="../../index.php">MovieConnect</a></h1>
             <ol>

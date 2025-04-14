@@ -68,7 +68,7 @@ if (!isset($_POST['username']) || !isset($_POST['password']) || empty(trim($_POS
 <body>    
     
     <h1><?= $message ?></h1>
-    <p>go back to <a href="../index.html">Log in</a>"</p>
+    <p>go back to <a href="../index.php">Log in</a>"</p>
     
     
 </body>

@@ -167,21 +167,23 @@ if (isset($_POST['editMovieDetails'])) {
 </head>
 <body>
 <?php if (isset($_SESSION['user_id'])): ?>
-    <nav>
-        <a href="../pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & Ratings</a>
-        <h1>Comments and Ratings</h1>
-        <ol>
-            <li><a href="../grabMovie/addMovie.php">Request New Movie</a></li>
-            <li><a href="../../config/logout.php">Log Out</a></li>
-        </ol>
-    </nav>
-<?php else: ?>
-    <nav>
-        <h1>MovieConnect</h1>
-        <li><a href="../../login.html">Log In</a></li>
-    </nav>
-<?php endif; ?>
+        <nav>
+            <a href="../pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
+            <a href="../../index.php"><h1>MovieConnect</h1></a>
+            <ol>
+                <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
+                <li></li>
+                <li><a href="../../config/logout.php">Log out</a></li>
+            </ol>
+        </nav>
+    <?php else: ?>
+        <nav>
+            <h1>MovieConnect</h1>
+            <li><a href="../..login.html">Log in</a></li>
+        </nav>
 
+    <?php endif; ?>
+    <h1>Update  Movie</h1>
 <main>
     <?php if ($isDbUpdated): ?>
         

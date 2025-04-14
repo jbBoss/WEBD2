@@ -22,7 +22,7 @@ $validFile = $_GET['valid'] ?? false;
 <?php if (isset($_SESSION['user_id'])): ?>
         <nav>
             <a href="../pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
-            <h1>Comments and Ratings</h1>
+            <a href="../../index.php"><h1>MovieConnect</h1></a>
             <ol>
                 <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
                 <li></li>
@@ -36,6 +36,7 @@ $validFile = $_GET['valid'] ?? false;
         </nav>
 
     <?php endif; ?>
+    <h1>Request New Movie</h1>
     <main>
         <div class="api_control">
             <input type="text" id="search" placeholder="Search Here to Grab Details Faster">

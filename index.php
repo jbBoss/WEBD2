@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </nav>
     <?php else: ?>
         <nav class="defaultNav">
-            <h1 class="site-title">MovieConnect</h1>
+            <a href="index.php"> <h1 class="site-title">MovieConnect</h1> </a>
             <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
         </nav>
     <?php endif; ?>

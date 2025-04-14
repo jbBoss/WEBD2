@@ -101,14 +101,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && isset($
                     <p class="movie-description"><?= htmlspecialchars($movie['movie_description']) ?></p>
                 </div>
 
-                <!-- Comment and Rating Form -->
                 <form class="comment_n_rating" action="addComments.php" method="post">
                     <div class="comment">
                         <label for="comment">Comment</label>
                         <textarea name="comment" required></textarea>
                     </div>
 
-                    <!-- Movie ID Hidden Input -->
                     <input type="hidden" name="movie_id" value="<?= $movie['movie_id'] ?>">
 
                     <div>

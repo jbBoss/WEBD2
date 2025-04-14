@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-
+<a href="../Resource\pages\Admin\admin.html"> go back</a>
 </body>
 
 </html>
