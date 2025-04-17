@@ -63,7 +63,7 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
     <?php else: ?>
         <nav class="defaultNav">
            <a href="../../index.php"><h1 class="site-title">MovieConnect</h1></a> 
-            <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
+            <li class="nav-item"><a href="../../login.html" class="nav-link login">Log In</a></li>
         </nav>
     <?php endif; ?>
 
