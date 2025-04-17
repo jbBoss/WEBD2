@@ -13,48 +13,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rating = isset($_POST['rating']) ? (int) $_POST['rating'] : '';
     $genre = isset($_POST['genre']) ? $_POST['genre'] : '';
     $title_sort = isset($_POST['title_sort']) ? $_POST['title_sort'] : '';
+    $year_sort = isset($_POST['year_sort']) ? $_POST['year_sort'] : '';
     $search_term = isset($_POST['search']) ? '%' . $_POST['search'] . '%' : '';
 
-    // Start base query for filtering
-    $query = "SELECT * FROM movie_table WHERE 1"; // Starting with WHERE 1, meaning no condition
-
-    // Array to collect parameters for binding
+    $query = "SELECT * FROM movie_table WHERE 1";
     $params = [];
 
-    // Apply rating filter if selected
     if (!empty($rating)) {
         $query .= " AND imdb_rating >= :rating";
         $params[':rating'] = $rating;
     }
 
-    // Apply genre filter if selected
     if (!empty($genre)) {
         $query .= " AND genre = :genre";
         $params[':genre'] = $genre;
     }
 
-    // Apply search if text is entered
     if (!empty($search_term)) {
         $query .= " AND movie_name LIKE :search_term";
         $params[':search_term'] = $search_term;
     }
 
-    // Apply title sorting if selected
+    // Sorting logic
     if (!empty($title_sort)) {
         $query .= " ORDER BY movie_name $title_sort";
+    } elseif (!empty($year_sort)) {
+        $query .= " ORDER BY movie_year $year_sort";
     } else {
-        // Default ordering if no sort option selected
         $query .= " ORDER BY movie_id DESC";
     }
 
-    // Prepare and execute the query with parameter binding
     $statement = $db->prepare($query);
     $statement->execute($params);
     $filtered_movies = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    // Assign filtered results to the variable for display
     $user_watched_movies = $filtered_movies;
 }
+
 
 ?>
 
@@ -132,6 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="">Sort by title</option>
                         <option value="DESC">Z-A</option>
                         <option value="ASC">A-Z</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="year">Year:</label>
+                    <select name="year_sort" id="year" class="filter-select">
+                        <option value="">Sort by year</option>
+                        <option value="DESC">latest</option>
+                        <option value="ASC">oldest</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Apply Filters</button>
