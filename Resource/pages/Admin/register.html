@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../Styles/Reg_style.css">
+    <link rel="stylesheet" href="../../Styles/Reg_style.css">
     <title>Registeration</title>
 </head>
 <body>
@@ -12,18 +12,18 @@
             <h1>MovieConnect</h1>
         </div>
         
-        <form id="registrationForm" action="../../config/Register.php" method="post">
+        <form id="registrationForm" action="adminRegister.php" method="post">
             <div class="name-fields">
                 <div class="form-group">
                     <label for="firstName">First Name</label>
                     <input type="text" id="firstName" name="firstName" class="form-control" required>
-                    <div class="error-message" id="firstNameError">Please enter your first name</div>
+                    <div class="error-message" id="firstNameError">Please enter first name</div>
                 </div>
                 
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
                     <input type="text" id="lastName" name="lastName" class="form-control" required>
-                    <div class="error-message" id="lastNameError">Please enter your last name</div>
+                    <div class="error-message" id="lastNameError">Please enter last name</div>
                 </div>
             </div>
             
@@ -53,11 +53,8 @@
             
             <button type="submit" class="btn">Create Account</button>
             
-            <div class="login-link">
-                Already have an account? <a href="../../index.html">Log in</a>
-            </div>
         </form>
     </div>
-    <script src="../Script/registration.js"></script>
+    <script src="../../Script/registration.js"></script>
 </body>
 </html>

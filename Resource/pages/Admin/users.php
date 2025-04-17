@@ -24,7 +24,9 @@ try {
 <?php include '../../../config/adminnav.php'; ?>
 <br>
 <main>
-
+ <div>
+    <a href="register.html"><p>add new user</p></a>
+ </div>
     <div>
         <ol>
                 <div class="user-container">

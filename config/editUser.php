@@ -22,17 +22,53 @@ if (!$user_data) {
     exit;
 }
 
+
+function valid_password($data_one)
+{
+    $pattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/";
+
+    if (preg_match($pattern, $data_one)) {
+        return ($data_one = password_hash($data_one, PASSWORD_DEFAULT));
+    } else {
+        return false;
+    }
+}
+
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['update'])) {
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $fullname = filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $new_password = $_POST['password'];
 
-        $update_query = "UPDATE user_table 
-                         SET user_name = :username, user_fname = :fullname, user_gmail = :email 
-                         WHERE user_id = :user_id";
-        $update_stmt = $db->prepare($update_query);
+        if (!empty($new_password)) {
+            $password = valid_password($new_password);
+            if (!$password) {
+                $message = "Password must be at least 8 characters, include uppercase, lowercase, and a number.";
+            } else {
+                $update_query = "UPDATE user_table 
+                    SET user_name = :username, 
+                        user_fname = :fullname,
+                        user_gmail = :email,
+                        user_password = :password
+                    WHERE user_id = :user_id";
+
+                $update_stmt = $db->prepare($update_query);
+                $update_stmt->bindValue(':password', $password);
+            }
+        } else {
+            $update_query = "UPDATE user_table 
+                SET user_name = :username, 
+                    user_fname = :fullname,
+                    user_gmail = :email
+                WHERE user_id = :user_id";
+
+            $update_stmt = $db->prepare($update_query);
+        }
+
+        // Bind common values
         $update_stmt->bindValue(':username', $username);
         $update_stmt->bindValue(':fullname', $fullname);
         $update_stmt->bindValue(':email', $email);
@@ -40,39 +76,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($update_stmt->execute()) {
             $message = "User updated successfully!";
-            // Refresh user data after update
             $statement->execute();
             $user_data = $statement->fetch(PDO::FETCH_ASSOC);
         } else {
             $message = "Error updating user.";
         }
     }
+    }
 
     if (isset($_POST['delete'])) {
         // Delete from related tables first
         $tables = ['movie_request', 'watched', 'user_table'];
         $success = true;
-    
+
         foreach ($tables as $table) {
             $delete_query = "DELETE FROM $table WHERE user_id = :user_id";
             $delete_stmt = $db->prepare($delete_query);
             $delete_stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    
+
             if (!$delete_stmt->execute()) {
                 $success = false;
                 $message = "Error deleting from $table.";
                 break;
             }
         }
-    
+
         if ($success) {
             $message = "User and related data deleted successfully!";
             header("Location: ../Resource/pages/Admin/users.php");
             exit;
         }
     }
-    
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h2>Edit User</h2>
 
     <?php if (!empty($message)): ?>
-        <p style="color: green;"><?= htmlspecialchars($message) ?></p>
+        <p style="color: green;"><?= htmlspecialchars($message) ?></p> <a href="../Resource/pages/Admin/users.php">go back
+        </a>
     <?php endif; ?>
 
     <form action="" method="post">
@@ -102,8 +138,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="email">Email</label>
         <input type="email" name="email" value="<?= htmlspecialchars($user_data['user_gmail']) ?>" required><br><br>
 
+        <label for="password">Password</label>
+        <input name="password"><br>
+
+
         <button type="submit" name="update">Update</button>
-        <button type="submit" name="delete" onclick="return confirm('Are you sure you want to delete this user?');" style="color: red;">Delete</button>
+        <button type="submit" name="delete" onclick="return confirm('Are you sure you want to delete this user?');"
+            style="color: red;">Delete</button>
     </form>
 </body>
 
