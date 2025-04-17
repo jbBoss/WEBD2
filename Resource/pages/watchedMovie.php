@@ -103,7 +103,7 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach ($users as $user): ?>
                 <div class="commentNrating">
                     <h3>User: <?= htmlspecialchars($user['user_fname']) ?></h3>
-                    <h4>Comment: <?= htmlspecialchars($user['comment']) ?></h4>
+                    <h4>Comment: <?= ($user['comment']) ?></h4>
                     <h5><?= htmlspecialchars($user['user_fname']) ?>'s Rating: <?= htmlspecialchars($user['rating']) ?>/10</h5>
                     <p>Commented at: <?= date("F j, Y, g:i a", strtotime($user['time'])) ?></p>
 

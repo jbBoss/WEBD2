@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && $_FILES[
     $delete_path = file_upload_path($poster_to_delete);
 
     if (file_exists($delete_path) && $poster_to_delete !== 'Default.jpeg') {
-        unlink($delete_path); // Delete the image 
+        unlink($delete_path); // Delete the image file
 
         // Update the movie's poster back to 'Default.jpeg'
         $movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
@@ -170,7 +170,7 @@ if (isset($_POST['editMovieDetails'])) {
     if (empty($errors)) {
         $isDbUpdated = add_request($db, $movie_name, $genre, $imdb_rating, $director, $language, $poster, $year, $description, $imdb_id);
         if ($isDbUpdated) {
-            header("Location: /WD/0_Project_WEBD/Resource/pages/Admin/updateMovie.php");
+            header("Location: /WD/0_Project_WEBD/Resource/pages/Admin/movies.php");
             exit();
         }
     }
@@ -266,7 +266,7 @@ if (isset($_POST['editMovieDetails'])) {
                 </label>
 
                 <input type="submit" name="editMovieDetails" value="Submit Movie">
-                <a href="../pages/Admin/updateMovie.php"> Cancel </a>
+                <a href="../pages/Admin/movies.php"> Cancel </a>
             </form>
         </div>
     </main>

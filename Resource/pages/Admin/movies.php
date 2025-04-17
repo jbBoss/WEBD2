@@ -65,6 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </button>
                                         <button>delete
                                     </a>
+                                    <a href="../../grabMovie/editMovieDetail.php?movie_id=<?= $movie['movie_id'] ?>">
+                                        </button>
+                                        <button>edit
+                                    </a>
 
 
                                 </div>

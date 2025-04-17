@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form class="comment_n_rating" action="updateComment.php" method="post">
                 <div class="comment">
                     <label for="comment">Comment</label>
-                    <textarea name="comment" required><?= htmlspecialchars($movie['comment']) ?></textarea>
+                    <textarea name="comment" required><?= ($movie['comment']) ?></textarea>
                 </div>
                 <input hidden name="Moviecomment_id" value="<?= ($movie['watch_id']) ?>">
                 <div>

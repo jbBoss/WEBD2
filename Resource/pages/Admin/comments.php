@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 <div class="userCommentsAndRating">
                                     <h2><?= htmlspecialchars($movie['user_fname']) ?></h2>
-                                        <h5>Comment: <?= htmlspecialchars($movie['comment']) ?></h5>
+                                        <h5>Comment: <?= ($movie['comment']) ?></h5>
                                             <p><strong> Personal Rating:</strong>
                                                 <?= htmlspecialchars($movie['imdb_rating']) ?></p>
                                 </div>

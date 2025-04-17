@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
 
                                 <div class="userCommentsAndRating">
-                                <h3><strong>Comment:</strong> <?= htmlspecialchars($movie['comment']) ?></h3>
+                                <h3><strong>Comment:</strong> <?= ($movie['comment']) ?></h3>
 
                                     <p><strong> Personal Rating:</strong> <?= htmlspecialchars($movie['rating']) ?></p>
                                     <div class="deleteButton">
