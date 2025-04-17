@@ -5,7 +5,7 @@ require('../../config/connect.php');
 use \Gumlet\ImageResize;
 
 $edit_movie = [];
-
+$errors = [];
 if (isset($_GET['movie_id'])) {
     $movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
 
@@ -56,7 +56,8 @@ function file_upload_path($filename, $folder = 'uploads')
     return join(DIRECTORY_SEPARATOR, [$base, $folder, basename($filename)]);
 }
 
-function file_is_an_image($temp, $path) {
+function file_is_an_image($temp, $path)
+{
     // Check if the file is an image by its extension and MIME type
     $valid_exts = ['gif', 'jpg', 'jpeg', 'png'];
     $valid_types = ['image/gif', 'image/jpeg', 'image/png'];
@@ -91,7 +92,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image']) && $_FILES[
         // Reject the upload if it's not a valid image
         $errors[] = "The uploaded file is not a valid image.";
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["DeleteImage"])) {
+    $poster_to_delete = $edit_movie['poster'];
+    $delete_path = file_upload_path($poster_to_delete);
+
+    if (file_exists($delete_path) && $poster_to_delete !== 'Default.jpeg') {
+        unlink($delete_path); // Delete the image 
+
+        // Update the movie's poster back to 'Default.jpeg'
+        $movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
+        $query = "UPDATE movie_table SET poster = 'Default.jpeg' WHERE movie_id = :movie_id";
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(':movie_id', $movie_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Reload page to reflect changes
+        header("Location: editMovieDetail.php?movie_id=" . $movie_id);
+        exit();
+    }
 }
+
 
 // Continue with the rest of your validation and database insert logic
 
@@ -159,17 +179,21 @@ if (isset($_POST['editMovieDetails'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Edit Movie</title>
     <link rel="stylesheet" href="../Styles/home.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-<?php if (isset($_SESSION['user_id'])): ?>
+    <?php if (isset($_SESSION['user_id'])): ?>
         <nav>
             <a href="../pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
-            <a href="../../index.php"><h1>MovieConnect</h1></a>
+            <a href="../../index.php">
+                <h1>MovieConnect</h1>
+            </a>
             <ol>
                 <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
                 <li></li>
@@ -183,56 +207,71 @@ if (isset($_POST['editMovieDetails'])) {
         </nav>
 
     <?php endif; ?>
-    <h1>Update  Movie</h1>
-<main>
-    <?php if ($isDbUpdated): ?>
-        
+    <h1>Update Movie</h1>
+    <main>
+        <?php if ($isDbUpdated): ?>
 
-    <?php elseif (!empty($errors)): ?>
-        <ul class="errors">
-            <?php foreach ($errors as $error): ?>
-                <li><?= $error ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
 
-    <div class="api_control">
-        <!-- <input type="text" id="search" placeholder="Search for a movie..."> -->
-        <div>
-        <?php if ($edit_movie['poster'] !== "Default.jpeg"): ?>
-                                            <img src="uploads/<?= $edit_movie['poster'] ?>" class="card-img-top"
-                                                alt="<?= $edit_movie['movie_name'] ?>">
-                                        <?php else: ?>
-                                            <div class="card h-100 text-center p-3">
-                                                <p><strong><?= $edit_movie['movie_name'] ?></strong></p>
-                                                <p>Poster not available for this movie</p>
-                                            </div>
-                                        <?php endif; ?>
+        <?php elseif (!empty($errors)): ?>
+            <ul class="errors">
+                <?php foreach ($errors as $error): ?>
+                    <li><?= $error ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <div class="api_control">
+            <!-- <input type="text" id="search" placeholder="Search for a movie..."> -->
+            <div>
+                <?php if ($edit_movie['poster'] !== "Default.jpeg"): ?>
+                    <img src="uploads/<?= $edit_movie['poster'] ?>" class="card-img-top"
+                        alt="<?= $edit_movie['movie_name'] ?>">
+                    <form action="" method="POST">
+                        <input type="hidden" name="DeleteImage" value="true">
+                        <input type="submit" value="Delete Image">
+                    </form>
+
+
+                <?php else: ?>
+                    <div class="card h-100 text-center p-3">
+                        <p><strong><?= $edit_movie['movie_name'] ?></strong></p>
+                        <p>Poster not available for this movie</p>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
 
-    <div class="form_control">
-        <form id="movie-form" method="POST" action="editMovieDetail.php?movie_id=<?= $edit_movie['movie_id'] ?>" enctype="multipart/form-data">
-            <input type="text" id="imdb_id" name="imdb_id" hidden value="<?= $edit_movie['imdb_id'] ?? '' ?>">
+        <div class="form_control">
+            <form id="movie-form" method="POST" action="editMovieDetail.php?movie_id=<?= $edit_movie['movie_id'] ?>"
+                enctype="multipart/form-data">
+                <input type="text" id="imdb_id" name="imdb_id" hidden value="<?= $edit_movie['imdb_id'] ?? '' ?>">
 
-            <label>Title: <input type="text" id="title" name="movie_name" value="<?= $edit_movie['movie_name'] ?>" required></label>
-            <label>Year: <input type="number" id="year" name="movie_year" value="<?= $edit_movie['movie_year'] ?>" required></label>
-            <label>Director: <input type="text" id="director" name="director" value="<?= $edit_movie['director'] ?>" required></label>
-            <label>Genre: <input type="text" id="genre" name="genre" value="<?= $edit_movie['genre'] ?>" required></label>
-            <label>Language: <input type="text" id="language" name="language" value="<?= $edit_movie['language'] ?>" required></label>
-            <label>Rating: <input type="text" id="rating" name="imdb_rating" value="<?= $edit_movie['imdb_rating'] ?>" required></label>
+                <label>Title: <input type="text" id="title" name="movie_name" value="<?= $edit_movie['movie_name'] ?>"
+                        required></label>
+                <label>Year: <input type="number" id="year" name="movie_year" value="<?= $edit_movie['movie_year'] ?>"
+                        required></label>
+                <label>Director: <input type="text" id="director" name="director" value="<?= $edit_movie['director'] ?>"
+                        required></label>
+                <label>Genre: <input type="text" id="genre" name="genre" value="<?= $edit_movie['genre'] ?>"
+                        required></label>
+                <label>Language: <input type="text" id="language" name="language" value="<?= $edit_movie['language'] ?>"
+                        required></label>
+                <label>Rating: <input type="text" id="rating" name="imdb_rating"
+                        value="<?= $edit_movie['imdb_rating'] ?>" required></label>
 
-            <input type='file' name='image' id='image' accept="image/*">
-            <label>Plot: 
-                <textarea id="plot" name="movie_description" required><?= trim($edit_movie['movie_description']) ?></textarea>
-            </label>
+                <input type='file' name='image' id='image' accept="image/*">
+                <label>Plot:
+                    <textarea id="plot" name="movie_description"
+                        required><?= trim($edit_movie['movie_description']) ?></textarea>
+                </label>
 
-            <input type="submit" name="editMovieDetails" value="Submit Movie">
-            <a href="../pages/Admin/updateMovie.php"> Cancel </a>
-        </form>
-    </div>
-</main>
+                <input type="submit" name="editMovieDetails" value="Submit Movie">
+                <a href="../pages/Admin/updateMovie.php"> Cancel </a>
+            </form>
+        </div>
+    </main>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
