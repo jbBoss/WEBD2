@@ -1,64 +1,59 @@
-/* General navbar styles */
+:root {
+    --primary-color: #2a2a2a;
+    --secondary-color: #e50914;
+    --accent-color: #f5f5f5;
+    --text-color: #ffffff;
+    --card-bg: #2a2a2a;
+    --hover-effect: all 0.3s ease;
+}
+/* Navigation Styles */
 .defaultNav {
-    background-color: #1f1f1f;
+    background: var(--primary-color);
     padding: 1rem 2rem;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: space-between;
-
-}
-
-/* Title */
-.site-title {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #e64a19;
-}
-
-/* Top nav items */
-.navbar-top {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-/* Navigation list */
-.nav-list {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 1rem;
-    display: flex;
-    gap: 1.5rem;
-}
-
-/* Nav items */
-.nav-item {
-    display: inline-block;
-}
-
-/* Nav links */
-.nav-link {
-    color: #ffffff;
+.defaultNav a {
     text-decoration: none;
+}
+
+.site-title {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--secondary-color), #b1060f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--hover-effect);
     padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s;
+    border-radius: 4px;
 }
 
-/* Link hover effects */
 .nav-link:hover {
-    background-color: #444;
-}
-
-/* Specific styles */
-.login {
-    background-color: #4caf50;
-    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-color);
 }
 
 .logout {
-    background-color: #f44336;
-    color: white;
+    color: var(--secondary-color);
+}
+.login {
+    color: green;
 }

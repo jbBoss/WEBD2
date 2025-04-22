@@ -1,12 +1,12 @@
 :root {
-  --primary: #6366f1;
-  --secondary: #3b82f6;
-  --background: #0f172a;
-  --background-light: #1e293b;
-  --text: #f8fafc;
+  --primary: #3b82f6;
+  --secondary: #22d3ee;
+  --success: #10b981;
+  --warning: #f59e0b;
   --border: #334155;
-  --success: #22c55e;
-  --warning: #eab308;
+  --text: #f1f5f9;
+  --background: #1e293b;
+  --card: #0f172a;
 }
 
 body {
@@ -16,9 +16,8 @@ body {
   color: var(--text);
 }
 
-h1 {
+h4 {
   text-align: center;
-  font-size: 2.5rem;
   margin-bottom: 2rem;
   color: #e64a19;
 }

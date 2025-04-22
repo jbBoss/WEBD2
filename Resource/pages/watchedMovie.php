@@ -51,19 +51,24 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
 <?php if (isset($_SESSION['user_id'])): ?>
         <nav class="defaultNav">
             <div class="navbar-top">
+
                 <li class="nav-item"><a href="../pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
                         Comments & Ratings</a></li>
             </div>
             <h1 class="site-title"><a href="../../index.php">MovieConnect</a></h1>
             <ol class="nav-list">
-                <li class="nav-item"><a href="Resource/grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
+                <li class="nav-item"><a href="../grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
                 <li class="nav-item"><a href="../../config/logout.php" class="nav-link logout">Log Out</a></li>
             </ol>
         </nav>
     <?php else: ?>
         <nav class="defaultNav">
-           <a href="../../index.php"><h1 class="site-title">MovieConnect</h1></a> 
-            <li class="nav-item"><a href="../../login.html" class="nav-link login">Log In</a></li>
+            <a href="../../index.php">
+                <h1 class="site-title">MovieConnect</h1>
+            </a>
+            <ol class="nav-list">
+                <li class="nav-item"><a href="../../login.html" class="nav-link login">Log In</a></li>
+            </ol>
         </nav>
     <?php endif; ?>
 
@@ -77,7 +82,7 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <h3>Rating</h3>
                     <p id="movieRating"><?= htmlspecialchars($movie['imdb_rating']) ?>/10</p>
                     <h3>Description</h3>
-                    <p id="movieDescription"><?= htmlspecialchars($movie['movie_description']) ?></p>
+                    <p id="movieDescription"><?= ($movie['movie_description']) ?></p>
                     <h3>Director</h3>
                     <p id="movieDirector"><?= htmlspecialchars($movie['director']) ?></p>
                     <h3>Language</h3>
@@ -92,8 +97,8 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
                         alt="<?= $movie['movie_name'] ?>">
                 <?php else: ?>
                     <div class="card h-100 text-center p-3">
-                        <p><strong><?= $movie['movie_name'] ?></strong></p>
-                        <p>Poster not available for this movie</p>
+                        <p class = "text-primary" ><strong><?= $movie['movie_name'] ?></strong></p>
+                        <p class = "text-primary" >Poster not available for this movie</p>
                     </div>
                 <?php endif; ?>
             </div>

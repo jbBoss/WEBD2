@@ -62,20 +62,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Resource/Styles/defaultNav.css">
+    <!-- <link rel="stylesheet" href="Resource/Styles/defaultNav.css"> -->
     <link rel="stylesheet" href="Resource/Styles/firstPage.css">
 
     <title>MovieConnect</title>
 </head>
 
-<body style="background-color: #1f1f1f;">
+<body style="background-color:rgb(53, 53, 53);">
     <?php if (isset($_SESSION['user_id'])): ?>
         <nav class="defaultNav">
             <div class="navbar-top">
-                <li class="nav-item"><a href="Resource/pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
-                        Comments & Ratings</a></li>
+                <ol class="nav-list">
+                    <li class="nav-item"><a href="Resource/pages/userComments.php"
+                            class="nav-link"><?= $_SESSION['user'] ?>'s
+                            Comments & Ratings</a></li>
+                </ol>
             </div>
-            <h1 class="site-title">MovieConnect</h1>
+            <a href="index.php">
+                <h1 class="site-title">MovieConnect</h1>
+            </a>
             <ol class="nav-list">
                 <li class="nav-item"><a href="Resource/grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
                 <li class="nav-item"><a href="config/logout.php" class="nav-link logout">Log Out</a></li>
@@ -83,8 +88,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </nav>
     <?php else: ?>
         <nav class="defaultNav">
-            <a href="index.php"> <h1 class="site-title">MovieConnect</h1> </a>
-            <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
+            <a href="index.php">
+                <h1 class="site-title">MovieConnect</h1>
+            </a>
+            <ol class="nav-list">
+                <li class="nav-item"><a href="login.html" class="nav-link login">Log In</a></li>
+            </ol>
         </nav>
     <?php endif; ?>
     <?php if (isset($_SESSION['user_id'])): ?>
@@ -94,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="filter-group">
                     <!-- <label for="rating">Rating:</label> -->
                     <select name="rating" id="rating" class="filter-select">
-                        <option value="">Rating 1 to 9</option>
+                        <option value="">Sort by Rating</option>
                         <option value="1">1+</option>
                         <option value="2">2+</option>
                         <option value="3">3+</option>
@@ -106,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="9">9+</option>
                     </select>
                 </div>
-                <div class="filter-group">
+                <!-- <div class="filter-group">
                     <label for="genre">Genre:</label>
                     <select name="genre" id="genre" class="filter-select">
                         <option value="">Select a genre</option>
@@ -120,19 +129,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <option value="animation">Animation</option>
                         <option value="documentary">Documentary</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="filter-group">
-                    <label for="title">Title:</label>
+                    <!-- <label for="title">Title:</label> -->
                     <select name="title_sort" id="title" class="filter-select">
-                        <option value="">Sort by title</option>
+                        <option value="">Sort by Title</option>
                         <option value="DESC">Z-A</option>
                         <option value="ASC">A-Z</option>
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="year">Year:</label>
+                    <!-- <label for="year">Year:</label> -->
                     <select name="year_sort" id="year" class="filter-select">
-                        <option value="">Sort by year</option>
+                        <option value="">Sort by Year</option>
                         <option value="DESC">latest</option>
                         <option value="ASC">oldest</option>
                     </select>
@@ -167,18 +176,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     alt="<?= $movie['movie_name'] ?>">
                             <?php else: ?>
                                 <div class="card h-100 text-center p-3">
-                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
-                                    <p>Poster not available for this movie</p>
+                                    <p class="text-secondary"><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p class="text-secondary">Poster not available for this movie</p>
                                 </div>
                             <?php endif; ?>
                             <a href="Resource/pages/WatchedMovie.php?movie_id=<?= $movie['movie_id'] ?>"
-
-                            style="text-decoration: none;">
+                                style="text-decoration: none;">
 
                                 <div class="card-body text-center">
 
-                                
-                                    <h3 class="card-title"><?= $movie['movie_name'] ?></h3>
+
+                                    <h3 class="card-title"><strong><?= $movie['movie_name'] ?></strong></h3>
                                     <p class="card-text"><strong>Genre:</strong> <?= $movie['genre'] ?></p>
                                     <p class="card-text"><strong>Year:</strong> <?= $movie['movie_year'] ?></p>
                                     <p class="card-text"><strong>Rating:</strong> <?= $movie['imdb_rating'] ?>/10</p>

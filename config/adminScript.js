@@ -18,13 +18,13 @@ searchBox.addEventListener("input", function () {
 
     timeout = setTimeout(() => {
         fetchMovies(query);
-    }, 300); // Debounce time (300ms)
+    }, 300); // wait time 300ms
 });
 
 async function fetchMovies(query) {
     const url = `https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`;
     try {
-        const response = await fetch(url);
+        const response = await fetch(url); // AJAX request
         const data = await response.json();
 
         if (data.Search) {

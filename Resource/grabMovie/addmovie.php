@@ -11,22 +11,29 @@ $validFile = $_GET['valid'] ?? false;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Movie Entry</title>
-    <link rel="stylesheet" href="../Styles/home.css">
+    <link rel="stylesheet" href="../Styles/defaultNav.css">
     <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
-<?php if (isset($_SESSION['user_id'])): ?>
-        <nav>
-            <a href="../pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
-            <a href="../../index.php"><h1>MovieConnect</h1></a>
-            <ol>
-                <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
-                <li></li>
-                <li><a href="../../config/logout.php">Log out</a></li>
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <nav class="defaultNav">
+            <div class="navbar-top">
+            <ol class="nav-list">
+                <li class="nav-item"><a href="../pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
+                Comments & Ratings</a></li>
+                </ol>
+            </div>
+            <h1 class="site-title"><a href="../../index.php">MovieConnect</a></h1>
+
+            <ol class="nav-list">
+                <li class="nav-item"><a href="../grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
+                <li class="nav-item"><a href="../../config/logout.php" class="nav-link logout">Log Out</a></li>
             </ol>
         </nav>
     <?php else: ?>
@@ -36,19 +43,19 @@ $validFile = $_GET['valid'] ?? false;
         </nav>
 
     <?php endif; ?>
-    <h1>Request New Movie</h1>
+    <h4>Request New Movie</h4>
     <main>
         <div class="api_control">
             <input type="text" id="search" placeholder="Search Here to Grab Details Faster">
             <div>
                 <p id="search-results">
-                    
+
                 </p>
             </div>
         </div>
         <div class="form_control">
             <form id="movie-form" method="POST" action="submit.php" enctype="multipart/form-data">
-            <input type="text" id="imdb_id" name="imdb_id" hidden>
+                <input type="text" id="imdb_id" name="imdb_id" hidden>
 
                 <label>Title: <input type="text" id="title" name="movie_name" required></label>
                 <label>Year: <input type="number" id="year" name="movie_year" required></label>
@@ -68,4 +75,5 @@ $validFile = $_GET['valid'] ?? false;
 
     <script src="script.js"></script>
 </body>
+
 </html>

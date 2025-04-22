@@ -18,14 +18,14 @@ main {
     padding: 0 1rem;
 }
 
-ol {
+main ol {
     list-style: none;
     padding: 0;
     display: grid;
     gap: 1.5rem;
 }
 
-li {
+main li {
     background: #1e1e1e;
     border-radius: 12px;
     overflow: hidden;
@@ -33,9 +33,42 @@ li {
     transition: transform 0.2s ease;
 }
 
-li:hover {
+main li:hover {
     transform: translateY(-3px);
 }
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 10px auto;
+    max-width: 300px;
+}
+
+.input-text {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #aa1703;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #e63803;
+}
+
 
 .movie-card {
     display: flex;

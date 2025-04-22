@@ -43,23 +43,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Styles/comments.css">
-    <link rel="stylesheet" href="../Styles/home.css">
+    <link rel="stylesheet" href="../Styles/defaultNav.css">
 
     <title>Admin</title>
 </head>
 
 <body>
     <?php if (isset($_SESSION['user_id'])): ?>
-        <nav>
-            <ol>
-                <li><a href="userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a></li>
-                <!-- <li><a href="topComments.php">Most Commented</a></li>
-                <li><a href="topRated.php">Top rated</a></li> -->
-            </ol>
+        <nav class="defaultNav">
+            <div class="navbar-top">
+                <ol class="nav-list">
+                <li class="nav-item"><a href="../pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
+                Comments & Ratings</a></li>
+                </ol>
+                
+            </div>
             <h1 class="site-title"><a href="../../index.php">MovieConnect</a></h1>
-            <ol>
-                <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
-                <li><a href="../../config/logout.php">Log out</a></li>
+            <ol class="nav-list">
+                <li class="nav-item"><a href="../grabMovie/addMovie.php" class="nav-link">Request New Movie</a></li>
+                <li class="nav-item"><a href="../../config/logout.php" class="nav-link logout">Log Out</a></li>
             </ol>
         </nav>
         <form action="" method="POST" class="search-form">
@@ -75,56 +77,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <br>
-
     <main>
-        <div>
-            <ol>
-                <?php foreach ($user_commented_movies as $movie): ?>
-                    <li><a class="bigMovieButton" href="">
-                            <div class="movie-card">
-                                <?php if ($movie['poster'] !== "Default.jpeg"): ?>
-                                    <img src="..//grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
-                                        alt="<?= $movie['movie_name'] ?>">
-                                <?php else: ?>
-                                    <div class="card h-100 text-center p-3">
-                                        <p><strong><?= $movie['movie_name'] ?></strong></p>
-                                        <p>Poster not available for this movie</p>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="movie-info">
-                                    <h3><?= htmlspecialchars($movie['movie_name']) ?></h3>
-                                        <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
-                                        <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
-                                        <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?></p>
-                                        <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
-                                        <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
-                                        <br>
-                                        <p><strong>Commented On:</strong>
-                                            <?= date("F j, Y, g:i a", strtotime($movie['time'])) ?></p>
-                                </div>
+    <div>
+    <ol>
+<?php foreach ($user_commented_movies as $movie): ?>
+    <li>
+        <div class="movie-card">
+            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top" alt="<?= $movie['movie_name'] ?>">
+            <?php else: ?>
+                <img src="fallback.jpg" class="card-img-top" alt="No Poster Available">
+            <?php endif; ?>
+            
+            <div class="movie-info">
+                <h3>
+                    <a class="bigMovieButton" href="#" style="color: #e64a19; text-decoration: none;">
+                        <?= htmlspecialchars($movie['movie_name']) ?>
+                    </a>
+                </h3>
+                <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
+                <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
+                <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?></p>
+                <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
+                <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
+                <p><strong>Commented On:</strong> <?= date("F j, Y, g:i a", strtotime($movie['time'])) ?></p>
+            </div>
 
-                                <div class="userCommentsAndRating">
-                                <h3><strong>Comment:</strong> <?= ($movie['comment']) ?></h3>
-
-                                    <p><strong> Personal Rating:</strong> <?= htmlspecialchars($movie['rating']) ?></p>
-                                    <div class="deleteButton">
-                                        <a class="edit-btn" href="updateComment.php?watch_id=<?= $movie['watch_id'] ?>"
-                                            onclick="return confirm('edit this comment ?')"> Edit </a>
-                                        <a class="delete-btn" href="updateComment.php?Delete_id=<?= $movie['watch_id'] ?>"
-                                            onclick="return confirm('delete this comment ?')"> Delete </a>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-
-
-                    </li></a>
-                <?php endforeach; ?>
-            </ol>
+            <div class="userCommentsAndRating">
+                <h3><strong>Comment:</strong> <?= htmlspecialchars($movie['comment']) ?></h3>
+                <p><strong>Personal Rating:</strong> <?= htmlspecialchars($movie['rating']) ?></p>
+                <div class="deleteButton">
+                    <a class="edit-btn" href="updateComment.php?watch_id=<?= $movie['watch_id'] ?>" onclick="return confirm('edit this comment?')">Edit</a>
+                    <a class="delete-btn" href="updateComment.php?Delete_id=<?= $movie['watch_id'] ?>" onclick="return confirm('delete this comment?')">Delete</a>
+                </div>
+            </div>
         </div>
-    </main>
+    </li>
+<?php endforeach; ?>
+</ol>
+
+    </div>
+</main>
+
 
 </body>
 
