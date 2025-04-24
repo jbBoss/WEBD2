@@ -119,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
+<?php include 'adminnav.php'; ?>
     <h2>Edit User</h2>
 
     <?php if (!empty($message)): ?>

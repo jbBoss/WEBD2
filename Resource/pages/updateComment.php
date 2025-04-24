@@ -8,36 +8,47 @@ $current_user_name = $_SESSION['user'];
 $watch_id = filter_input(INPUT_GET, 'watch_id', FILTER_SANITIZE_NUMBER_INT);
 $delete_id = filter_input(INPUT_GET, 'Delete_id', FILTER_SANITIZE_NUMBER_INT);
 
-// Handle Delete
-if ($delete_id) {
-    $query = "DELETE FROM watched WHERE watch_id = :delete_id AND user_id = :user_id";
-    $statement = $db->prepare($query);
-    $statement->bindValue(':delete_id', $delete_id, PDO::PARAM_INT);
-    $statement->bindValue(':user_id', $current_user, PDO::PARAM_INT);
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $watch_id = filter_input(INPUT_GET, 'watch_id', FILTER_SANITIZE_NUMBER_INT);
+    $delete_id = filter_input(INPUT_GET, 'Delete_id', FILTER_SANITIZE_NUMBER_INT);
+    // Check if the mo
+    $query = "SELECT m.*, w.* 
+            FROM movie_table m 
+            JOIN watched w ON m.movie_id = w.movie_id
+            WHERE w.user_id = :user_id AND w.watch_id = :watch_id";
 
-    if ($statement->execute()) {
-        header("Location: userComments.php");
-        exit();
+    $statement = $db->prepare($query);
+    $statement->bindParam(':user_id', $current_user, PDO::PARAM_INT);
+    $statement->bindParam(':watch_id', $watch_id, PDO::PARAM_INT);
+    $statement->execute();
+    $movie = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($delete_id) {
+        $query = "DELETE FROM watched WHERE watch_id = :delete_id AND user_id = :user_id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':delete_id', $delete_id, PDO::PARAM_INT);
+        $statement->bindValue(':user_id', $current_user, PDO::PARAM_INT);
+    
+        if ($statement->execute()) {
+            header("Location: userComments.php");
+            exit();
+        } else {
+            echo "Error: Failed to delete the record.";
+            exit();
+        }
+    }
+
+    if ($movie) {
+       
+        
     } else {
-        echo "Error: Failed to delete the record.";
+        header("Location: ../index.php");
         exit();
     }
 }
 
 
-// Fetch movie details for the form
-$query = "SELECT m.*, w.* 
-          FROM movie_table m 
-          JOIN watched w ON m.movie_id = w.movie_id
-          WHERE w.user_id = :user_id AND w.watch_id = :watch_id";
 
-$statement = $db->prepare($query);
-$statement->bindParam(':user_id', $current_user, PDO::PARAM_INT);
-$statement->bindParam(':watch_id', $watch_id, PDO::PARAM_INT);
-$statement->execute();
-$movie = $statement->fetch(PDO::FETCH_ASSOC);
-
-// Handle update form submission
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty(trim($_POST['comment']))) {
     echo "Error: Failed to update record Fill all fields.";
@@ -106,9 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty(trim($_POST['comment']))) {
             <a href="userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
             <h1>MovieConnect</h1>
             <ol>
-                <li><a href="../Resources/pages/grabMovie/addMovie.php">Request New movie</a></li>
+                <li><a href="..\grabMovie\addmovie.php">Request New movie</a></li>
                 <li></li>
-                <li><a href="logout.php">Log out</a></li>
+                <li><a href="../../config\logout.php">Log out</a></li>
             </ol>
         </nav>
     <?php else: ?>

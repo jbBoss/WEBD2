@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <?php include '../../../config/adminnav.php'; ?>
-    <form action="" method="POST" class="search-form">
+    <form action="#" method="POST" class="search-form">
         <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
@@ -49,42 +49,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div>
             <ol>
                 <?php foreach ($movie_data as $movie): ?>
-                    <li><a class="bigMovieButton" href="">
-                            <div class="movie-card">
-                                <div class="movie-info">
-                                    <h5><?= htmlspecialchars($movie['movie_name']) ?></h5>
-                                    <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
-                                    <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
-                                    <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?></p>
-                                    <p><strong>Description:</strong> <?= ($movie['movie_description']) ?>
-                                    </p>
-                                    <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
-                                    <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
+                    <li class="bigMovieButton">
+                        <div class="movie-card">
+                            <div class="movie-info">
+                                <h5><?= htmlspecialchars($movie['movie_name']) ?></h5>
+                                <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
+                                <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
+                                <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?></p>
+                                <p><strong>Description:</strong> <?= ($movie['movie_description']) ?>
+                                </p>
+                                <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
+                                <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
+                                <div>
+                                    <a class="edit_delete"
+                                        href="../../../config/deleteMovie.php?movie_id=<?= $movie['movie_id'] ?>">
 
-                                    <a href="../../../config/deleteMovie.php?movie_id=<?= $movie['movie_id'] ?>">
-                                        </button>
-                                        <button>delete
+                                        <div>delete </div>
                                     </a>
-                                    <a href="../../grabMovie/editMovieDetail.php?movie_id=<?= $movie['movie_id'] ?>">
-                                        </button>
-                                        <button>edit
+                                    <a class="edit_delete"
+                                        href="../../grabMovie/editMovieDetail.php?movie_id=<?= $movie['movie_id'] ?>">
+
+                                        <div>edit </div>
                                     </a>
-
-
                                 </div>
 
-                                <?php if ($movie['poster'] !== "Default.jpeg"): ?>
-                                    <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
-                                        alt="<?= $movie['movie_name'] ?>">
-                                <?php else: ?>
-                                    <div class="card h-100 text-center p-3">
-                                        <p><strong><?= $movie['movie_name'] ?></strong></p>
-                                        <p>Poster not available for this movie</p>
-                                    </div>
-                                <?php endif; ?>
+
 
                             </div>
-                    </li></a>
+
+                            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                alt="<?= trim($movie['movie_name']) ?>" >
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
+
+                        </div>
+                    </li>
                 <?php endforeach; ?>
             </ol>
         </div>

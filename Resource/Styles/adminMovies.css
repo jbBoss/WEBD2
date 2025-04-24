@@ -40,9 +40,6 @@ li:last-child {
     transition: transform 0.2s;
 }
 
-.movie-card:hover {
-    transform: translateY(-2px);
-}
 
 .movie-card img {
     width: 200px;
@@ -75,20 +72,7 @@ li:last-child {
     line-height: 1.5;
 }
 
-button {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-top: 10px;
-}
 
-button:hover {
-    background-color: #c82333;
-}
 
 .bigMovieButton {
     text-decoration: none;
@@ -138,4 +122,31 @@ button:hover {
         width: 100%;
         padding: 10px;
     }
+}
+a{text-decoration: none;}
+.edit_delete div {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-top: 10px;
+    width: 50px;
+    text-align: center;
+}
+
+
+.movie-info div{
+    
+    width: 50px;
+}
+
+.edit_delete div :hover {
+    background-color: #2e2927;
+    
+}
+.edit_delete{
+    width: 50px;
 }
