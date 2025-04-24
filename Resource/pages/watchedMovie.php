@@ -111,8 +111,9 @@ $users = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <h4>Comment: <?= ($user['comment']) ?></h4>
                     <h5><?= htmlspecialchars($user['user_fname']) ?>'s Rating: <?= htmlspecialchars($user['rating']) ?>/10</h5>
                     <p>Commented at: <?= date("F j, Y, g:i a", strtotime($user['time'])) ?></p>
-
+                    
                 </div>
+                <br>
             <?php endforeach; ?>
         <?php else: ?>
             <p>No comments yet.</p>

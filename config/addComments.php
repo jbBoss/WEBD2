@@ -4,52 +4,66 @@ require('sessionCheck.php');
 
 $current_user = $_SESSION['user_id'];
 $current_user_name = $_SESSION['user'];
-
-$movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_SANITIZE_NUMBER_INT); // Getting the movie ID from the URL for viewing
-echo 'movie' . $movie_id . '<br>';
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $movie_id = filter_input(INPUT_GET, 'movie_id', FILTER_SANITIZE_NUMBER_INT); // Getting the movie ID from the URL for viewing
+// echo 'movie' . $movie_id . '<br>';
 // Display the movie_id
 // echo "The movie ID is: " . htmlspecialchars($movie_id);
 
-// Check if the mo
-$query = "SELECT * FROM movie_table WHERE movie_id = :movie_id";
-$statement = $db->prepare($query);
-$statement->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
-// Execute the query
-$statement->execute();
-// Fetch the movie data (assuming it's only one movie)
-$movie = $statement->fetch(PDO::FETCH_ASSOC);
+    // Check if the mo
+    $query = "SELECT * FROM movie_table WHERE movie_id = :movie_id";
+    $statement = $db->prepare($query);
+    $statement->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
+    // Execute the query
+    $statement->execute();
+    // Fetch the movie data (assuming it's only one movie)
+    $movie = $statement->fetch(PDO::FETCH_ASSOC);
 
-if ($movie) {
-    // echo "Movie Found: " . htmlspecialchars($movie['movie_name']);
-} else {
-    header("Location: ../index.php");
+    if ($movie) {
+        // echo "Movie Found: " . htmlspecialchars($movie['movie_name']);
+    } else {
+        header("Location: ../index.php");
+    }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && isset($_POST['rating'])) {
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && isset($_POST['rating']) ) {
 
-    $movie_id = filter_input(INPUT_POST, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
-    $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
-    $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
-    if (empty(trim($_POST['comment']))){
+    if (empty(trim($_POST['comment']))) {
         echo "Error: Failed to update record Fill all fields.";
-    }else{
-        $query = "INSERT INTO watched (movie_id, user_id, comment, rating) VALUES (:movie_id, :user_id, :comment, :rating)";
-    $statement = $db->prepare($query);
-    $statement->bindValue(':comment', $comment);
-    $statement->bindValue(':user_id', $current_user);
-    $statement->bindValue(':rating', $rating);
-    $statement->bindValue(':movie_id', $movie_id, PDO::PARAM_INT);
+        $movie_id = filter_input(INPUT_POST, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
+        $query = "SELECT * FROM movie_table WHERE movie_id = :movie_id";
+        $statement = $db->prepare($query);
+        $statement->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
+        // Execute the query
+        $statement->execute();
+        // Fetch the movie data (assuming it's only one movie)
+        $movie = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if ($statement->execute()) {
-        header("Location: ../Resource/pages/WatchedMovie.php?movie_id=" . $movie_id);
-        exit();
+
     } else {
-        echo "Error: Failed to update record.";
-    }
+
+        $movie_id = filter_input(INPUT_POST, 'movie_id', FILTER_SANITIZE_NUMBER_INT);
+        $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
+        $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
+
+        $query = "INSERT INTO watched (movie_id, user_id, comment, rating) VALUES (:movie_id, :user_id, :comment, :rating)";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':comment', $comment);
+        $statement->bindValue(':user_id', $current_user);
+        $statement->bindValue(':rating', $rating);
+        $statement->bindValue(':movie_id', $movie_id, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            header("Location: ../Resource/pages/WatchedMovie.php?movie_id=" . $movie_id);
+            exit();
+        } else {
+
+            echo "Error: Failed to update record .";
+        }
     }
     echo " Insert comment and rating into the Fields";
-    
+
 }
 ?>
 <!DOCTYPE html>
@@ -70,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && isset($
             <a href=""><?= $_SESSION['user'] ?>'s Comments & ratings</a>
             <h1>MovieConnect</h1>
             <ol>
-                <li><a href="../Resources/pages/grabMovie/addMovie.php">Request New movie</a></li>
+                <li><a href="../Resource/grabMovie/addmovie.php">Request New movie</a></li>
                 <li></li>
                 <li><a href="logout.php">Log out</a></li>
             </ol>
