@@ -14,7 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $genre = isset($_POST['genre']) ? $_POST['genre'] : '';
     $title_sort = isset($_POST['title_sort']) ? $_POST['title_sort'] : '';
     $year_sort = isset($_POST['year_sort']) ? $_POST['year_sort'] : '';
-    $search_term = isset($_POST['search']) ? '%' . $_POST['search'] . '%' : '';
+    $search_raw = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
+    $search_term = $search_raw ? '%' . trim($search_raw) . '%' : '';
+
 
     $query = "SELECT * FROM movie_table WHERE 1";
     $params = [];
