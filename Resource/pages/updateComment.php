@@ -38,7 +38,22 @@ $statement->execute();
 $movie = $statement->fetch(PDO::FETCH_ASSOC);
 
 // Handle update form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty(trim($_POST['comment']))) {
+    echo "Error: Failed to update record Fill all fields.";
+
+    $watch_id = filter_input(INPUT_POST, 'Moviecomment_id', FILTER_SANITIZE_NUMBER_INT);
+    $query = "SELECT m.*, w.* 
+    FROM movie_table m 
+    JOIN watched w ON m.movie_id = w.movie_id
+    WHERE w.user_id = :user_id AND w.watch_id = :watch_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindParam(':user_id', $current_user, PDO::PARAM_INT);
+    $statement->bindParam(':watch_id', $watch_id, PDO::PARAM_INT);
+    $statement->execute();
+    $movie = $statement->fetch(PDO::FETCH_ASSOC);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['comment']) && isset($_POST['rating'])) {
         $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_STRING);
         $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
@@ -56,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->bindValue(':user_id', $current_user, PDO::PARAM_INT);
 
         if ($statement->execute()) {
-            echo $comment.'<br>';
-            echo $rating.'<br>';
-            echo "blank", $watch_id.'<br>';
+            echo $comment . '<br>';
+            echo $rating . '<br>';
+            echo "blank", $watch_id . '<br>';
             header("Location: userComments.php");
             exit();
         } else {
@@ -66,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 } else {
-    
+
 }
 ?>
 
@@ -102,11 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><a href="login.html">Log in</a></li>
         </nav>
     <?php endif; ?>
-    
+
     <main>
         <div class="movie-card">
             <?php if ($movie['poster'] !== "Default.jpeg"): ?>
-                <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top" alt="<?= $movie['movie_name'] ?>">
+                <img src="../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                    alt="<?= $movie['movie_name'] ?>">
             <?php else: ?>
                 <div class="card h-100 text-center p-3">
                     <p><strong><?= $movie['movie_name'] ?></strong></p>
@@ -132,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="rating-options">
                         <?php for ($i = 1; $i <= 10; $i++): ?>
                             <input type="radio" id="rating<?= $i ?>" name="rating" value="<?= $i ?>"
-                                   <?= ($movie['rating'] == $i) ? 'checked' : '' ?>>
+                                <?= ($movie['rating'] == $i) ? 'checked' : '' ?>>
                             <label for="rating<?= $i ?>"><?= $i ?></label>
                         <?php endfor; ?>
                     </div>
@@ -141,8 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit">Update</button>
             </form>
 
-            
-            
+
+
         </div>
     </main>
 </body>
