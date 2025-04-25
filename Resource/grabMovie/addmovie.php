@@ -16,17 +16,24 @@ $validFile = $_GET['valid'] ?? false;
     <meta charset="UTF-8">
     <title>Movie Entry</title>
     <link rel="stylesheet" href="../Styles/defaultNav.css">
+    <?php if ($_SESSION['user_id'] === 12): ?>
+    <link rel="stylesheet" href="adminaddmovie.css">
+       
+        <?php else: ?>
     <link rel="stylesheet" href="style.css">
+    <?php endif; ?>
 
 </head>
 
 <body>
-    <?php if (isset($_SESSION['user_id'])): ?>
+    <?php if ($_SESSION['user_id'] === 12): ?>
+        <?php include '../../config/adminnav.php'; ?>
+    <?php elseif (isset($_SESSION['user_id'])): ?>
         <nav class="defaultNav">
             <div class="navbar-top">
-            <ol class="nav-list">
-                <li class="nav-item"><a href="../pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
-                Comments & Ratings</a></li>
+                <ol class="nav-list">
+                    <li class="nav-item"><a href="../pages/userComments.php" class="nav-link"><?= $_SESSION['user'] ?>'s
+                            Comments & Ratings</a></li>
                 </ol>
             </div>
             <h1 class="site-title"><a href="../../index.php">MovieConnect</a></h1>

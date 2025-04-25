@@ -1,13 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
 body {
-    background-color: #6998c7;
-    padding: 2rem;
+    background-color: #a1bfeb;
 }
 
 .user-container {
@@ -75,4 +67,18 @@ body {
     .user-info {
         padding: 0.75rem;
     }
+}
+a{text-decoration:  none;}
+.newuserbutton{
+background-color:  #189ae0;
+border-radius: 7px;
+padding: 5px;
+color: black;
+text-align: right;
+border: 2px solid black;
+}
+.Btnhj{
+    display: flex;
+justify-content: end;
+align-items: center;
 }

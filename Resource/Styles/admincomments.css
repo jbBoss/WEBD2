@@ -1,7 +1,15 @@
 /* Modern CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
     background-color: #a1bfeb;
     color: black;
+    line-height: 1.6;
 }
 
 main {
@@ -10,31 +18,62 @@ main {
     padding: 0 1rem;
 }
 
-ol {
+main ol {
     list-style: none;
     padding: 0;
     display: grid;
+    gap: 1.5rem;
 }
 
-li {
+main li {
     background: whitesmoke;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
-    margin-bottom: 5px;
-
 }
 
-li:hover {
+main li:hover {
     transform: translateY(-3px);
 }
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 10px auto;
+    max-width: 300px;
+}
+
+.input-text {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #aa1703;
+    color: black;
+}
+
+.btn-primary:hover {
+    background-color: #e63803;
+}
+
 
 .movie-card {
     display: flex;
     gap: 1.5rem;
-    padding: 1rem;
-
+    padding: 1.5rem;
 }
 
 .movie-card img {
@@ -54,13 +93,14 @@ li:hover {
     color: #e64a19;
 
     font-size: 1.8rem;
+    margin-bottom: 0.5rem;
 }
 
 .movie-info h6 {
     color: black;
 
     font-size: 0.9rem;
-    margin-bottom: 0.07rem;
+    margin-bottom: 0.3rem;
 }
 
 .movie-info p {
@@ -77,9 +117,8 @@ li:hover {
     min-width: 300px;
     width: 30%;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    align-content: center;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .userCommentsAndRating h3 {
@@ -94,30 +133,31 @@ li:hover {
     margin-top: 1rem;
 }
 
-input[type="submit"] {
+.deleteButton a {
     padding: 0.6rem 1.2rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.2s ease;
+    text-decoration: none;
 }
 
-input[type="submit"][value="Approve"] {
+.edit-btn {
     background-color: #4CAF50;
     color: black;
 }
 
-input[type="submit"][value="Approve"]:hover {
+.edit-btn:hover {
     background-color: #45a049;
 }
 
-input[type="submit"][value="Reject"] {
+.delete-btn {
     background-color: #f44336;
     color: black;
 }
 
-input[type="submit"][value="Reject"]:hover {
+.delete-btn:hover {
     background-color: #da190b;
 }
 
@@ -161,4 +201,46 @@ margin-right: 20px;
     input[type="submit"] {
         width: 100%;
     }
+}
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+
+}
+.button-group input{
+    margin: auto;
+    height: 50px;
+    
+}
+/* Disemvowel button (light action) */
+.DisemvowelButton {
+    background-color: #92c8eb;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.DisemvowelButton:hover {
+    background-color: #64b3de;
+}
+
+/* Delete button (destructive action) */
+.deleteButton {
+    background-color: #e64a19;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #bf360c;
 }

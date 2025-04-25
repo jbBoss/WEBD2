@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fullname = filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $new_password = $_POST['password'];
+        $update_stmt = null;
 
         if (!empty($new_password)) {
             $password = valid_password($new_password);
@@ -54,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         user_gmail = :email,
                         user_password = :password
                     WHERE user_id = :user_id";
-
                 $update_stmt = $db->prepare($update_query);
                 $update_stmt->bindValue(':password', $password);
             }
@@ -64,49 +64,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     user_fname = :fullname,
                     user_gmail = :email
                 WHERE user_id = :user_id";
-
             $update_stmt = $db->prepare($update_query);
         }
 
-        // Bind common values
-        $update_stmt->bindValue(':username', $username);
-        $update_stmt->bindValue(':fullname', $fullname);
-        $update_stmt->bindValue(':email', $email);
-        $update_stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+        if ($update_stmt) {
+            $update_stmt->bindValue(':username', $username);
+            $update_stmt->bindValue(':fullname', $fullname);
+            $update_stmt->bindValue(':email', $email);
+            $update_stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 
-        if ($update_stmt->execute()) {
-            $message = "User updated successfully!";
-            $statement->execute();
-            $user_data = $statement->fetch(PDO::FETCH_ASSOC);
-        } else {
-            $message = "Error updating user.";
-        }
-    }
-    }
-
-    if (isset($_POST['delete'])) {
-        // Delete from related tables first
-        $tables = ['movie_request', 'watched', 'user_table'];
-        $success = true;
-
-        foreach ($tables as $table) {
-            $delete_query = "DELETE FROM $table WHERE user_id = :user_id";
-            $delete_stmt = $db->prepare($delete_query);
-            $delete_stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-
-            if (!$delete_stmt->execute()) {
-                $success = false;
-                $message = "Error deleting from $table.";
-                break;
+            if ($update_stmt->execute()) {
+                $message = "User updated successfully!";
+                $statement->execute();
+                $user_data = $statement->fetch(PDO::FETCH_ASSOC);
+            } else {
+                $message = "Error updating user.";
             }
         }
+    }
 
-        if ($success) {
-            $message = "User and related data deleted successfully!";
-            header("Location: ../Resource/pages/Admin/users.php");
-            exit;
+}
+
+if (isset($_POST['delete'])) {
+    // Delete from related tables first
+    $tables = ['movie_request', 'watched', 'user_table'];
+    $success = true;
+
+    foreach ($tables as $table) {
+        $delete_query = "DELETE FROM $table WHERE user_id = :user_id";
+        $delete_stmt = $db->prepare($delete_query);
+        $delete_stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+
+        if (!$delete_stmt->execute()) {
+            $success = false;
+            $message = "Error deleting from $table.";
+            break;
         }
     }
+
+    if ($success) {
+        $message = "User and related data deleted successfully!";
+        header("Location: ../Resource/pages/Admin/users.php");
+        exit;
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -116,18 +117,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit User</title>
+    <link rel="stylesheet" href="../Resource/Styles/edituser.css">
 </head>
 
 <body>
-<?php include 'adminnav.php'; ?>
-    <h2>Edit User</h2>
+    <h2>Edit User Details</h2>
 
-    <?php if (!empty($message)): ?>
-        <p style="color: green;"><?= htmlspecialchars($message) ?></p> <a href="../Resource/pages/Admin/users.php">go back
-        </a>
-    <?php endif; ?>
+    
 
     <form action="" method="post">
+    
         <label for="user_id">User id :<?= $user_data['user_id'] ?></label>
         <br>
         <label for="username">User Name</label>
@@ -144,9 +143,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         <button type="submit" name="update">Update</button>
-        <button type="submit" name="delete" onclick="return confirm('Are you sure you want to delete this user?');"
-            style="color: red;">Delete</button>
-    </form>
+        <button type="submit" name="delete"
+            onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+            <a href="../Resource/pages/Admin/users.php">Cancel
+            </a>
+            <?php if (!empty($message)): ?>
+                <br>
+        <div class="message">
+            <p style="color: green;"><?= htmlspecialchars($message) ?></p> <a href="../Resource/pages/Admin/users.php">Go
+                back
+            </a>
+        </div>
+
+    <?php endif; ?>
+        </form>
 </body>
 
 </html>

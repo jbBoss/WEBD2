@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <!-- <link rel="stylesheet" href="../Styles/home.css"> -->
-    <link rel="stylesheet" href="../../Styles/comments.css">
+    <link rel="stylesheet" href="../../Styles/admincomments.css">
     <title>Admin</title>
 </head>
 
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                                 <form action="comments.php" class="button-group" method="POST">
                                     <input type="hidden" name="watch_id" value="<?=($movie['watch_id'])?>">
-                                    <input class="deleteButton" type="submit" name="moderate" class="remove-btn"
+                                    <input class="DisemvowelButton" type="submit" name="moderate" class="remove-btn"
                                         value="Disemvowel comment" onclick="return confirm('Confirm Action? ')">
                                     <input class="deleteButton" type="submit" name="remove" class="remove-btn"
                                         value="delete comment" onclick="return confirm('delete this comment ?')">

@@ -28,71 +28,42 @@ $movies = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     <br>
     <main>
-        <div>
+    <div class="container">
+        <div class="row">
             <ol>
-                <div class="container">
-                    <div class="row">
-                        <?php foreach ($movies as $movie): ?>
-                            <li><a class="bigMovieButton" href="">
-                                    <div class="movie-card">
-                                    <?php if ($movie['poster'] !== "Default.jpeg"): ?>
-                                            <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
-                                                alt="<?= $movie['movie_name'] ?>">
-                                        <?php else: ?>
-                                            <div class="card h-100 text-center p-3">
-                                                <p><strong><?= $movie['movie_name'] ?></strong></p>
-                                                <p>Poster not available for this movie</p>
-                                            </div>
-                                        <?php endif; ?>
-                                        <div class="movie-info">
-                                            <h3><?= htmlspecialchars($movie['movie_name']) ?></h5>
-                                                <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
-                                                <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
-                                                <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?>
-                                                </p>
-                                                <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?>
-                                                </p>
-                                                <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?>
-                                                </p>
-                                                <p><strong>IMDB ID:</strong> <?= ($movie['imdb_id']) ?>
-                                                </p>
-                                                <br>
-                                                <p><strong>User: </strong><?= $movie['user_id'] ?></p>
-                                                <p><strong>Requested On:</strong>
-                                                    <?= date("F j, Y, g:i a", strtotime($movie['time'])) ?></p>
-                                        </div>
+                <?php foreach ($movies as $movie): ?>
+                    <li>
+                        <div class="movie-card bigMovieButton">
+                            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                    alt="<?= htmlspecialchars($movie['movie_name']) ?>">
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= htmlspecialchars($movie['movie_name']) ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
 
-                                        <div class="userCommentsAndRating">
-                                            <!-- <form action="../../../config/approveSubmission.php" class="button-group"
-                                                method="POST">
-                                                <div class="deleteButton">
-                                                    <input type="hidden" name="request_id"
-                                                        value=" <?= ($movie['request_id']) ?>">
-                                                    <input class="" type="submit" name="approve" class="remove-btn"
-                                                        value="Approve"
-                                                        onclick="return confirm('Approve this Submission ?')">
-                                                    <input class="" type="submit" name="reject" class="remove-btn"
-                                                        value="Reject"
-                                                        onclick="return confirm('Reject this Suubmission ?')">
-
-                                                    <input class="" type="submit" name="edit" class="remove-btn"
-                                                        value="Edit Details"> -->
-
-                                                </div>
-                                            </form> 
-                                        </div>
-
-                                    </div>
-
-
-                            </li></a>
-                            <br>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+                            <div class="movie-info">
+                                <h3><?= htmlspecialchars($movie['movie_name']) ?></h3>
+                                <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
+                                <h6>Year: <?= htmlspecialchars($movie['movie_year']) ?></h6>
+                                <p><strong>Rating:</strong> <?= htmlspecialchars($movie['imdb_rating']) ?></p>
+                                <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
+                                <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
+                                <p><strong>IMDB ID:</strong> <?= htmlspecialchars($movie['imdb_id']) ?></p>
+                                <p><strong>User:</strong> <?= htmlspecialchars($movie['user_id']) ?></p>
+                                <p><strong>Requested On:</strong> <?= date("F j, Y, g:i a", strtotime($movie['time'])) ?></p>
+                            </div>
+                        </div>
+                    </li>
+                    <br>
+                <?php endforeach; ?>
             </ol>
         </div>
-    </main>
+    </div>
+</main>
+
 
 </body>
 

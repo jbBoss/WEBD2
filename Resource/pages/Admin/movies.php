@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <?php include '../../../config/adminnav.php'; ?>
+    <br>
     <form action="#" method="POST" class="search-form">
         <input type="text" id="search" name="search" class="input-text" placeholder="Search for a movie">
         <button type="submit" class="btn btn-primary">Search</button>
@@ -51,6 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php foreach ($movie_data as $movie): ?>
                     <li class="bigMovieButton">
                         <div class="movie-card">
+                            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
+                                <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
+                                    alt="<?= trim($movie['movie_name']) ?>">
+                            <?php else: ?>
+                                <div class="card h-100 text-center p-3">
+                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
+                                    <p>Poster not available for this movie</p>
+                                </div>
+                            <?php endif; ?>
                             <div class="movie-info">
                                 <h5><?= htmlspecialchars($movie['movie_name']) ?></h5>
                                 <h6>Genre: <?= htmlspecialchars($movie['genre']) ?></h6>
@@ -61,31 +71,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <p><strong>Director:</strong> <?= htmlspecialchars($movie['director']) ?></p>
                                 <p><strong>Language:</strong> <?= htmlspecialchars($movie['language']) ?></p>
                                 <div>
-                                    <a class="edit_delete"
-                                        href="../../../config/deleteMovie.php?movie_id=<?= $movie['movie_id'] ?>">
-
-                                        <div>delete </div>
+                                    <a class="deleteButton"
+                                        href="../../../config/deleteMovie.php?movie_id=<?= $movie['movie_id'] ?>"
+                                        onclick="return confirm('Are you sure you want to delete this movie?');">
+                                        Delete
                                     </a>
-                                    <a class="edit_delete"
+                                    <a class="editButton"
                                         href="../../grabMovie/editMovieDetail.php?movie_id=<?= $movie['movie_id'] ?>">
-
-                                        <div>edit </div>
+                                        Edit
                                     </a>
                                 </div>
+
 
 
 
                             </div>
 
-                            <?php if ($movie['poster'] !== "Default.jpeg"): ?>
-                                <img src="../../grabMovie/uploads/<?= $movie['poster'] ?>" class="card-img-top"
-                                alt="<?= trim($movie['movie_name']) ?>" >
-                            <?php else: ?>
-                                <div class="card h-100 text-center p-3">
-                                    <p><strong><?= $movie['movie_name'] ?></strong></p>
-                                    <p>Poster not available for this movie</p>
-                                </div>
-                            <?php endif; ?>
+
 
                         </div>
                     </li>

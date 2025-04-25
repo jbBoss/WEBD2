@@ -183,32 +183,16 @@ if (isset($_POST['editMovieDetails'])) {
 <head>
     <meta charset="UTF-8">
     <title>Edit Movie</title>
-    <link rel="stylesheet" href="../Styles/home.css">
+    <link rel="stylesheet" href="../Styles/defaultNav.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <?php if (isset($_SESSION['user_id'])): ?>
-        <nav>
-            <a href="../pages/userComments.php"><?= $_SESSION['user'] ?>'s Comments & ratings</a>
-            <a href="../../index.php">
-                <h1>MovieConnect</h1>
-            </a>
-            <ol>
-                <li><a href="../grabMovie/addMovie.php">Request New movie</a></li>
-                <li></li>
-                <li><a href="../../config/logout.php">Log out</a></li>
-            </ol>
-        </nav>
-    <?php else: ?>
-        <nav>
-            <h1>MovieConnect</h1>
-            <li><a href="../..login.html">Log in</a></li>
-        </nav>
-
-    <?php endif; ?>
+<?php include '../../config/adminnav.php'; ?>
     <h1>Update Movie</h1>
+
     <main>
+
         <?php if ($isDbUpdated): ?>
 
 
@@ -219,8 +203,8 @@ if (isset($_POST['editMovieDetails'])) {
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
-
         <div class="api_control">
+
             <!-- <input type="text" id="search" placeholder="Search for a movie..."> -->
             <div>
                 <?php if ($edit_movie['poster'] !== "Default.jpeg"): ?>
@@ -242,6 +226,7 @@ if (isset($_POST['editMovieDetails'])) {
         </div>
 
         <div class="form_control">
+
             <form id="movie-form" method="POST" action="editMovieDetail.php?movie_id=<?= $edit_movie['movie_id'] ?>"
                 enctype="multipart/form-data">
                 <input type="text" id="imdb_id" name="imdb_id" hidden value="<?= $edit_movie['imdb_id'] ?? '' ?>">
