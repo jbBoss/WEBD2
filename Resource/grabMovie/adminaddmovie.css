@@ -8,7 +8,14 @@
     --background: #1e293b;
     --card: #0f172a;
   }
-  
+  * {
+    margin:
+  0;
+    padding:
+  0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
   body {
     font-family: 'Segoe UI', system-ui, sans-serif;
     background-color: #a1bfeb;

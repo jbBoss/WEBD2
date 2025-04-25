@@ -1,8 +1,14 @@
-body {
+
+* {
+    margin:
+  0;
+    padding:
+  0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }body {
     background-color: #a1bfeb;
     color: #333;
-    margin: 0;
-    padding: 20px;
     font-family: 'Arial', sans-serif;
 }
 
